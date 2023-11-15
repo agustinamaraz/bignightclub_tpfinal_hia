@@ -1,0 +1,151 @@
+<div class="container mt-4 mb-4 formstyle">
+    <form #datosMedicosForm="ngForm" (ngSubmit)="onSubmit()">
+        <div *ngIf="!modifica" class="mb-3 ms-2">
+            <label for="paciente" class="form-label">Elija un paciente</label>
+            <input type="text" class="form-control" [(ngModel)]="filtroPacientes" id="filtroPacientes"
+                name="filtroPacientes" (input)="filtrarPacientes()" #filtroInput="ngModel"
+                placeholder="Busque el paciente por el nombre">
+            <br>
+            <select size="4" name="paciente" id="" aria-label="select pacient" [(ngModel)]="datoMedico.paciente"
+                #selectList class="form-select select-scrollable" style="max-height: 200px;"
+                (ngModelChange)="onChangeofOptions($event)" #pacienteInput="ngModel" required>
+                <option value="" disabled selected>Seleccione un paciente</option>
+                <option *ngFor="let item of pacientes" (click)="isSelected()" [value]="item._id">N y A: {{ item.nombre +
+                    ' ' + item.apellido }} dni: {{ item.dni }}</option>
+            </select>
+            <div *ngIf="pacienteInput.invalid && (pacienteInput.dirty ||pacienteInput.touched)"
+                class="alert alert-danger my-1 p-1">
+                <div *ngIf="pacienteInput.errors?.['required']">
+                    El paciente es requerido
+                </div>
+            </div>
+        </div>
+        <div class="mb-3 ms-2" *ngIf="modifica">
+            <label>{{datoMedico.pacienteObj.nombre + ' '+ datoMedico.pacienteObj.apellido}}</label>
+        </div>
+        <button type="button" class="btnCopy mb-3 ms-2" (click)="asignLatest()" *ngIf="existOther">
+            Copiar datos del anterior control
+        </button>
+        <div class="mb-3 ms-2">
+            <label for="motivo" class="form-label">Ingrese el motivo</label>
+            <input type="text" class="form-control form" [(ngModel)]="datoMedico.motivo" id="motivo" name="motivo"
+                required #motivoInput="ngModel" placeholder="Ingrese el motivo del control">
+            <div *ngIf="motivoInput.invalid && (motivoInput.dirty || motivoInput.touched)"
+                class="alert alert-danger my-1 p-1">
+                <div *ngIf="motivoInput.errors?.['required']">
+                    El motivo es requerido
+                </div>
+            </div>
+        </div>
+        <div class="mb-3 ms-2">
+            <label for="peso" class="form-label">Ingrese el peso</label>
+            <input type="number" class="form-control form" [(ngModel)]="datoMedico.peso" id="peso" min="0.01"
+                name="peso" [value]="datoMedico.peso == 0 ? datoMedico.peso : ''" required #pesoInput="ngModel"
+                placeholder="Ingrese el peso del paciente">
+            <div *ngIf="pesoInput.invalid && (pesoInput.dirty || pesoInput.touched)"
+                class="alert alert-danger my-1 p-1">
+                <div *ngIf="pesoInput.errors?.['required']">
+                    El peso es requerido
+                </div>
+                <div *ngIf="pesoInput.errors?.['min']">
+                    El peso debe ser mayor a 0
+                </div>
+            </div>
+        </div>
+        <div class="mb-3 ms-2">
+            <label for="talla" class="form-label">Ingrese la altura</label>
+            <input type="number" class="form-control form" [(ngModel)]="datoMedico.talla" id="talla" min="0.01"
+                name="talla" required #tallaInput="ngModel" [value]="datoMedico.talla == 0 ? datoMedico.talla : ''"
+                placeholder="Ingrese la altura del paciente">
+            <div *ngIf="tallaInput.invalid && (tallaInput.dirty || tallaInput.touched)"
+                class="alert alert-danger my-1 p-1">
+                <div *ngIf="tallaInput.errors?.['required']">
+                    La altura es requerida
+                </div>
+                <div *ngIf="tallaInput.errors?.['min']">
+                    La altura debe ser mayor a 0
+                </div>
+            </div>
+        </div>
+        <div class="mb-3 ms-2">
+            <label for="tension_arterial" class="form-label">Ingrese la tension arterial</label>
+            <input type="text" class="form-control form" [(ngModel)]="datoMedico.tension_arterial" id="tension_arterial"
+                min="0.01" name="tension_arterial" required #tension_arterialInput="ngModel"
+                placeholder="Ingrese la tension arterial del paciente">
+            <div *ngIf="tension_arterialInput.invalid && (tension_arterialInput.dirty || tension_arterialInput.touched)"
+                class="alert alert-danger my-1 p-1">
+                <div *ngIf="tension_arterialInput.errors?.['required']">
+                    La tension arterial es requerida
+                </div>
+                <div *ngIf="tension_arterialInput.errors?.['min']">
+                    La tension arterial debe ser mayor a 0
+                </div>
+            </div>
+        </div>
+        <div class="mb-3 ms-2">
+            <label for="diagnostico" class="form-label">Ingrese el diagnostico</label>
+            <textarea class="form-control form" [(ngModel)]="datoMedico.diagnostico" id="diagnostico" name="diagnostico"
+                required #diagnosticoInput="ngModel" placeholder="Ingrese el diagnostico del paciente"></textarea>
+            <div *ngIf="diagnosticoInput.invalid && (diagnosticoInput.dirty || diagnosticoInput.touched)"
+                class="alert alert-danger my-1 p-1">
+                <div *ngIf="diagnosticoInput.errors?.['required']">
+                    El diagnostico es requerido
+                </div>
+            </div>
+        </div>
+        <div class="mb-3 ms-2">
+            <label for="temperatura" class="form-label">Ingrese la temperatura</label>
+            <input type="text" class="form-control form" [(ngModel)]="datoMedico.temperatura" id="temperatura"
+                min="0.01" name="temperatura" required #temperaturaInput="ngModel"
+                placeholder="Ingrese la temperatura del paciente">
+            <div *ngIf="temperaturaInput.invalid && (temperaturaInput.dirty || temperaturaInput.touched)"
+                class="alert alert-danger my-1 p-1">
+                <div *ngIf="temperaturaInput.errors?.['required']">
+                    La temperatura es requerida
+                </div>
+                <div *ngIf="temperaturaInput.errors?.['min']">
+                    La temperatura debe ser mayor a 0
+                </div>
+            </div>
+        </div>
+        <div class="mb-3 ms-2" *ngIf="gender">
+            <label for="fechaMenstruacion" class="form-label">Fecha de ultima Menstruación</label>
+            <input type="date" class="form-control form" [(ngModel)]="datoMedico.fechaMenstruacion"
+                id="fechaMenstruacion" min="0.01" name="fechaMenstruacion" required #fechaMenstruacionInput="ngModel"
+                placeholder="Ingrese la fecha de menstruación">
+            <div *ngIf="fechaMenstruacionInput.invalid && (fechaMenstruacionInput.dirty || fechaMenstruacionInput.touched)"
+                class="alert alert-danger my-1 p-1">
+                <div *ngIf="fechaMenstruacionInput.errors?.['required']">
+                    La fecha de menstruación es requerida
+                </div>
+            </div>
+        </div>
+        <div class="mb-3 ms-2"
+            [ngClass]="{'is-invalid': centroSaludInput.invalid && (centroSaludInput.dirty || centroSaludInput.touched)}">
+            <label for="centroSalud">Centro de Salud</label>
+            <select name="centroSalud" id="centroSalud" aria-label="select centroSalud"
+                [(ngModel)]="datoMedico.centroSalud" class="form-select select-scrollable" required
+                #centroSaludInput="ngModel">
+                <option value="" disabled selected>Seleccione un centro de salud</option>
+                <option value="Centro Huaico">Centro Huaico</option>
+                <option value="Centro Cuyaya">Centro Cuyaya</option>
+            </select>
+            <div *ngIf="centroSaludInput.invalid && (centroSaludInput.dirty || centroSaludInput.touched)"
+                class="alert alert-danger my-1 p-1">
+                <div *ngIf="centroSaludInput.errors?.['required']">
+                    El centro de salud es requerido
+                </div>
+            </div>
+        </div>
+        <div class="mb-3 ms-2">
+            <label for="fecha" class="form-label">Fecha del dato medico</label>
+            <label class="form-control">{{datoMedico.fecha}}</label>
+        </div>
+        <button type="submit" *ngIf="!modifica" [disabled]="datosMedicosForm.invalid"
+            class="btnEnviar ms-2 mb-4">Guardar</button>
+        <button type="submit" *ngIf="modifica" [disabled]="datosMedicosForm.invalid"
+            class="btnEnviar ms-2 mb-4">Modificar</button>
+        <a class="btnVolver ms-2" [routerLink]="'/datosMedicos'">Volver</a>
+    </form>
+</div>
+<br>

@@ -1,0 +1,99 @@
+<div class="container">
+      <br>
+      <div style="padding-left: 5%;">
+        <button type="button" class="btnAgregar mt-1 ms-2 mb-2" (click)="direcionar()" >Agregar Anuncio</button>  
+      </div>
+
+<h5 class="ms-4 mt-2">Buscar Anuncio</h5>
+<div class="mb-3 ms-4" style="width:80%;">
+  <input class="form-control ms-2 mt-4" type="text" placeholder="Buscar" [(ngModel)]="searchText">
+</div>
+    <div style="padding: 3%;">
+        <table class="table table-bordered table-hover border-primary mt-5" >
+            <thead class="table-primary">
+                <tr>
+                    <th scope="col">Titulo</th>
+                    <th scope="col">Descripcion</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">Fecha desde</th>
+                    <th scope="col">Fecha hasta</th>
+                    <th scope="col">Recurso</th>
+                    <th scope="col">Operaciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor=" let  a  of ancuncios | search:searchText">
+                    <td data-label="titulo">{{a.titulo}}</td>
+                    <td data-label="Descripcion"> {{a.descripcion}}</td>
+                    <td data-label="Estado">{{a.estado}}</td>
+                    <td data-label="Fecha Desde">{{a.fechaDesde}}</td>
+                    <td data-label="Fecha Hasta">{{a.fechaHasta}}</td>
+                    <td data-label="Operaciones"> <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="clickRecurso(a)">
+                        Recurso
+                      </button>
+                    <td class="d-flex justify-content-around">
+                        <button type="button" class="btn btn-warning" (click)="modificarAnuncio(a._id)">Modificar</button>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#eliminar" (click)="modalEliminar(a._id)">Eliminar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+  
+<!-- Button trigger modal -->
+
+  
+  <!-- Modal -->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Recurso del Anuncio</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <table class="table table-bordered table-hover border-primary mt-5" >
+              <thead >
+                <tr>
+                    <th scope="col">TITULO</th>
+                    <th scope="col">TIPO</th>
+                    <th scope="col">URL</th>
+                   
+                </tr>
+            </thead>
+            <tbody >
+                <tr *ngFor=" let  a  of listRecurso">
+                    <td data-label="Titulo" >{{a.titulo}}</td>
+                    <td data-label="Tipo">{{a.tipo}}</td>
+                    <td data-label="Url"><a [href]="a.url" target="_blank">Ver Recurso -></a> </td>
+                  
+                </tr>
+            </tbody>
+
+            </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+<div class="modal fade" id="eliminar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+  <div class="modal-content">
+      <div class="modal-header">
+      <h1 class="modal-title fs-5" id="staticBackdropLabel">¿Esta seguro que desea eliminar a este anuncio?</h1>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <h4>El anuncio sera eliminado</h4>
+          <button type="button" class="btn btn-danger d-flex align-self-center" (click)="eliminarAnuncio(anuncioEliminar)">Eliminar</button>
+      </div>
+      <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+  </div>
+  </div>
+</div>

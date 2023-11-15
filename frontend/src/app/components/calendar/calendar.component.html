@@ -1,0 +1,30 @@
+
+<section class="container">
+  <div class="buttons">
+    <button type="button" *ngIf="!esAmbas() && !esLoggedGoogle()" (click)="login()">Login</button>
+  </div>
+  <form class="containerForm m-3 p-3 e">
+    <div class="form-group">
+      <div class="mb-3">
+        <label for="my-input">Descripcion del Evento:</label>
+        <input id="sumary" class="form-control" type="text" [(ngModel)]="event.summary" name="sumary" />
+      </div>
+      <div class="mb-3">
+        <label for="my-input">Desde:</label>
+        <input id="from" class="form-control" type="datetime-local" [(ngModel)]="fromDate" name="from" />
+      </div>
+      <div class="mb-3">
+        <label for="my-input">Hasta:</label>
+        <input id="to" class="form-control" type="datetime-local" [(ngModel)]="toDate" name="to" />
+      </div>
+    </div>
+    <button class="btn btn-primary m-3" type="button" (click)="crearEvento()">Crear Evento</button>
+  </form>
+
+  <div class="d-flex justify-content-center align-items-center mb-4 calendar-Box">
+<iframe src="https://embed.styledcalendar.com/#bPpcDptFtq2u3Mm4rk32" title="Styled Calendar" class="styled-calendar-container" style="width: 100%; border: none;" style="border: 0" width="1200" height="900" frameborder="0" scrolling="no" data-cy="calendar-embed-iframe"></iframe>
+<script async type="module" src="https://embed.styledcalendar.com/assets/parent-window.js"></script>
+  </div>
+
+  
+</section>

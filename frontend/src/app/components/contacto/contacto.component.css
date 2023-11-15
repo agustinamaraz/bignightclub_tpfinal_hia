@@ -1,0 +1,104 @@
+.card {
+  width: 400px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.gmail-card {
+  background-color: #E93F33;
+  color: #FFFFFF;
+}
+.celular-card{
+  background-color: #3CFF33;
+  color:#FFFFFF;
+
+}
+
+.phone-card {
+  background-color: #42A5F5;
+  color: #FFFFFF;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+}
+.ld img{
+   width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+.logo img {
+  width: 60px;
+  height: 60px;
+  margin-right: 10px;
+  border-radius: 50%;
+}
+
+.logo h3 {
+  font-size: 24px;
+  margin: 0;
+  font-weight: bold;
+}
+
+.description {
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.contact {
+  display: flex;
+  align-items: center;
+}
+
+.contact img {
+  width: 30px;
+  margin-right: 10px;
+  border-radius: 50%;
+}
+
+.contact p {
+  margin: 0;
+  font-size: 16px;
+}
+
+.divider {
+  margin: 10px 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.social-media {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+
+.social-media a {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  margin: 0 5px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.2);
+  text-align: center;
+  line-height: 30px;
+  color: white;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.social-media a:hover {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+.responsive {
+  width: 100%;
+
+  height: auto;
+}
+

@@ -1,0 +1,113 @@
+<div class="mt-5" *ngIf="hayAnuncios==true">
+  <div class="contenedor">
+    <p>¡Anuncio</p>
+    <ul>
+      <li>Nuevo!</li>
+      <li>Nuevo!</li>
+      <li>Nuevo!</li>
+    </ul>
+  </div>
+
+  <br><br><br><br><br><br>
+
+  <div class="container col-md-12">
+    <div class="card mb-3 card-principal" style="max-width: 1000px;">
+
+      <div class="row g-0 col-md-12">
+        <div class="col-md-6 mb-md-0 p-md-4">
+          <div *ngIf="valor == 'no'">
+            <div *ngIf="recurso.tipo == 'imagen'">
+              <img [src]="recurso.url" class="w-100" alt="...">
+            </div>
+            <div *ngIf="recurso.tipo == 'video'">
+              <video id="singleVideo" preload="auto" class="w-100" controls>
+                <source [src]="recurso.url" type="video/mp4">
+              </video>
+            </div>
+          </div>
+          <div *ngIf="valor == 'nulo' || rec == 'no'">
+
+            <img src="https://i.pinimg.com/550x/eb/63/56/eb6356b6bd93b584117979e6488349b7.jpg" class="w-100" alt="...">
+
+          </div>
+        </div>
+
+
+
+        <div class="col-md-6  mb-4 d-flex cardMain">
+          <div class="card-body">
+            <br>
+            <h1 class=" titleMain">{{anuncio.titulo}}</h1>
+            <br>
+
+            <h2>{{anuncio.descripcion}} </h2>
+            <br>
+            <h4>Fecha disponible: {{anuncio.fechaHasta}}</h4>
+            <button class="btn btn-primary" (click)="verAnuncion1()">ver anuncio </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="container">
+    <div class="row">
+
+      <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12" *ngFor=" let  a  of anuncios">
+
+        <div class="blog-card blog-card-blog">
+
+          <div *ngIf="a.recursos[0] != null">
+            <div *ngIf="a.recursos[0].tipo == 'imagen'">
+              <div class="blog-card-image">
+                <img class="img" [src]="a.recursos[0].url">
+              </div>
+            </div>
+            <div *ngIf="a.recursos[0].tipo == 'video'">
+              <video id="singleVideo" preload="auto" class="video">
+                <source [src]="a.recursos[0].url" type="video/mp4">
+              </video>
+            </div>
+            <div *ngIf="a.recursos[0].tipo != 'imagen' &&  a.recursos[0].tipo != 'video'">
+              <div class="blog-card-image">
+                <img class="img" src="https://i.pinimg.com/550x/eb/63/56/eb6356b6bd93b584117979e6488349b7.jpg">
+              </div>
+            </div>
+          </div>
+          <div *ngIf="a.recursos[0] == null">
+            <div class="blog-card-image">
+              <img class="img" src="https://i.pinimg.com/550x/eb/63/56/eb6356b6bd93b584117979e6488349b7.jpg">
+            </div>
+          </div>
+
+
+
+
+
+
+
+          <div class="blog-table">
+            <h6 class="blog-category blog-text-success"><i class="far fa-newspaper"></i> Anuncio</h6>
+            <h4 class="blog-card-caption">
+              <h3>{{a.titulo}}</h3>
+            </h4>
+            <p class="blog-card-description">{{a.descripcion}}</p>
+            <p class="card-text"><small class="text-muted">Disponible Hasta: {{a.fechaHasta}}</small></p>
+            <button class="btn btn-primary" (click)="verAnuncion(a._id)">ver anuncio </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+</div>
+
+
+<div class="m-5" *ngIf="hayAnuncios==false">
+  <h2 class="bg-danger p-2 text-white text-center ">NO HAY ANUNCIOS DISPONIBLES POR EL MOMENTO</h2>
+</div>

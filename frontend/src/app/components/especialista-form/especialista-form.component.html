@@ -1,0 +1,93 @@
+<br>
+<div class="mt-5">
+    <div style="padding:2%;" class="d-flex justify-content-center align-items-center align-items-center">
+
+        <form #pacienteForm="ngForm" class="formstyle" style="padding: 5%;" #especialistaForm="ngForm">
+            <h1>Formulario para Registrar un Especialista</h1>
+
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input name="nombre" type="text" class="form-control" id="nombre" [(ngModel)]="especialista.nombre"
+                    placeholder="Ingrese nombre" required #nombre="ngModel">
+                <div *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)" class="row alert alert-danger">
+                    <div *ngIf=" nombre.errors?.['required']">
+                        Nombre Requerido.
+                    </div>
+                    <div *ngIf=" nombre.errors?.['minlength']">
+                        Nombre, no menos de 4 caracteres.
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="idapellido" class="form-label">Apellido</label>
+                <input name="apellido" type="text" class="form-control" id="idapellido" placeholder="Ingrese apellido"
+                    required #apellido="ngModel" [(ngModel)]="especialista.apellido">
+                <div *ngIf="apellido.invalid && (apellido.dirty || apellido.touched)" class="row alert alert-danger">
+                    <div *ngIf=" apellido.errors?.['required']">
+                        Apellido Requerido.
+                    </div>
+                    <div *ngIf=" apellido.errors?.['minlength']">
+                        apellido, no menos de 4 caracteres.
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="dni" class="form-label">DNI</label>
+                <input type="number" class="form-control" id="dni" name="dni" required
+                    placeholder="Ingrese numero de dni" [(ngModel)]="especialista.dni" required #dni="ngModel">
+
+                <div *ngIf="dni.invalid && (dni.dirty || dni.touched)" class="row alert alert-danger">
+                    <div *ngIf=" dni.errors?.['required']">
+                        Numero de DNI requerido
+                    </div>
+                    <div *ngIf=" dni.errors?.['minlength']">
+                        DNI no puede tener menos de 7 numeros
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="dni" class="form-label">Profesion</label>
+                <select class="form-select" aria-label="Default select example" id="tipo" name="profesion"
+                    [(ngModel)]="especialista.profesion" required #profesion="ngModel">
+                    <option value="Cardiologia">Cardiologia</option>
+                    <option value="Oncología">Oncología</option>
+                    <option value="Pediatría">Pediatría</option>
+                </select>
+
+                <div *ngIf="profesion.invalid && (profesion.dirty || profesion.touched)" class="row alert alert-danger">
+                    <div *ngIf=" profesion.errors?.['required']">
+                        profesion requerida
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="dni" class="form-label">Centro de Salud</label>
+                <select class="form-select" aria-label="Default select example" id="tipo" name="centroSalud"
+                    [(ngModel)]="especialista.centroSalud" required #centroSalud="ngModel">
+                    <option value="" disabled selected>Seleccione un centro de salud</option>
+                    <option value="Centro Huaico">Centro Huaico</option>
+                    <option value="Centro Cuyaya">Centro Cuyaya</option>
+                </select>
+
+                <div *ngIf="centroSalud.invalid && (centroSalud.dirty || centroSalud.touched)" class="row alert alert-danger">
+                    <div *ngIf=" centroSalud.errors?.['required']">
+                        Centro de Salud requerido
+                    </div>
+                </div>
+            </div>
+
+
+            <button *ngIf="accion=='new'" type="submit" class="btn btn-success"
+                (click)="guardarEspecialista()" [disabled]="especialistaForm.invalid">Registrar
+                Especialista</button>
+            <button *ngIf="accion=='update'" type="submit" class="btn btn-warning"
+                (click)="modificarEspecialista()">Modificar Especialista</button>
+            <button type="submit" class="btn btn-danger ms-2" (click)="cancelar()">Cancelar</button>
+        </form>
+
+    </div>
+</div>

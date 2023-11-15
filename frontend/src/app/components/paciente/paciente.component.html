@@ -1,0 +1,158 @@
+<div class="container">
+  <div class="buttons" style="padding-left: 5%;">
+    <button type="button" class="btnAgregar mt-4 ms-2" (click)="agregarPaciente()">Agregar Paciente</button>
+    <button type="button" class="btnExcel ms-2" data-bs-toggle="modal" data-bs-target="#modalExcel">Descargar Excel <i
+        class='bx bx-table bx-flip-horizontal'></i></button>
+    <button type="button" class="btnPdf ms-2" data-bs-toggle="modal" data-bs-target="#modalPdf">Imprimir PDF <i
+        class=' bx bxs-file-pdf'></i></button>
+  </div>
+  <br>
+  <br>
+  <h5 class="ms-4">Buscar Paciente ya registrado con dni</h5>
+  <div class="mb-3 ms-4" style="width:80%;">
+    <input type="text" class="form-control" id="idfecha" name="fechaNac" required
+      placeholder="Ingrese dni de paciente a buscar" [(ngModel)]="dni" (ngModelChange)="obtenerPacienteDni()">
+  </div>
+  <h5 class="ms-4">Buscar Paciente ya registrado con nombre</h5>
+  <div class="mb-3 ms-4" style="width:80%;">
+    <input type="text" class="form-control" id="idfecha" name="fechaNac" required
+      placeholder="Ingrese dni de paciente a buscar" [(ngModel)]="nombre" (ngModelChange)="obtenerPacienteN()">
+  </div>
+  <h5 class="ms-4">Buscar Paciente ya registrado con apellido</h5>
+  <div class="mb-3 ms-4" style="width:80%;">
+    <input type="text" class="form-control" id="idfecha" name="fechaNac" required
+      placeholder="Ingrese dni de paciente a buscar" [(ngModel)]="apellido" (ngModelChange)="obtenerPacienteA()">
+  </div>
+  <!--<h5 class="ms-4">Buscar Paciente ya registrado con nombre o apellido</h5>
+    <div class="mb-3 ms-4" style="width:80%;">
+      <input type="text" class="form-control" id="idfecha" name="fechaNac" required
+          placeholder="Ingrese nombre o apellido de paciente a buscar" [(ngModel)]="dato" (ngModelChange)="obtenerPacienteNA()">
+  </div>-->
+ 
+    <!--<div *ngIf="pacienteFiltro.length==0 && click==true">
+      <h2 class="bg-danger p-2 text-white text-center">No se encontraron pacientes con esos datos</h2>
+    </div>
+
+    <table class="table table-striped table-hover mt-5" *ngIf="pacienteFiltro.length!=0">
+      <thead class="table-dark">
+        <tr>
+          <th scope="col">Dni</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Apellido</th>
+          <th scope="col">Fecha de Nacimiento</th>
+          <th scope="col">Genero</th>
+          <th scope="col">Operaciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of pacienteFiltro">
+          <td>{{p.dni}}</td>
+          <td>{{p.nombre}}</td>
+          <td>{{p.apellido}}</td>
+          <td>{{p.fechaNac}}</td>
+          <td>{{p.genero}}</td>
+          <td class="d-flex justify-content-around">
+            <button type="button" class="btn btn-warning" (click)="modificarPaciente(p)">Modificar</button>
+            <button type="button" class="btn btn-danger" (click)="eliminarPaciente(p)">Eliminar</button>
+            <button type="button" class="btn btn-primary" (click)="verControl(p)">Controles Medicos</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>-->
+
+
+
+  <div style="padding: 3%;">
+    <!-- datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"-->
+    <table class="table table-bordered table-hover border-primary mt-5">
+      <thead class="table-primary">
+        <tr>
+          <th scope="col">Dni</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Apellido</th>
+          <th scope="col">Fecha de Nacimiento</th>
+          <th scope="col">Genero</th>
+          <th scope="col">Operaciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of pacientes">
+          <td data-label="Dni">{{p.dni}}</td>
+          <td data-label="Nombre">{{p.nombre}}</td>
+          <td data-label="Apellido">{{p.apellido}}</td>
+          <td data-label="Fecha de Nacimiento">{{p.fechaNac | date: 'dd/MM/yyyy'}}</td>
+          <td data-label="Genero">{{p.genero}}</td>
+          <td data-label="Operaciones" class="d-flex justify-content-around">
+            <button type="button" class="btn btn-warning" (click)="modificarPaciente(p)">Modificar</button>
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#eliminar"
+              (click)="modalEliminar(p)">Eliminar</button>
+            <button type="button" class="btn btn-primary" (click)="verControl(p)">Controles Medicos</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="modalExcel" data-bs-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">¿Que archivo excel quiere descargar?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body d-flex justify-content-around">
+        <button class="btnExcel ms-2" (click)="excelTableGeneral()">Todos los controles<i
+            class='bx bx-table bx-flip-horizontal'></i></button>
+        <button class="btnExcel ms-2" (click)="excelTableHombreOtro()">Controles de Hombre u Otro<i
+            class='bx bx-table bx-flip-horizontal'></i></button>
+        <button class="btnExcel ms-2" (click)="excelTableMujeres()">Controles de Mujeres<i
+            class='bx bx-table bx-flip-horizontal'></i></button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" tabindex="-1" id="modalPdf" data-bs-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">¿Que archivo pdf quiere descargar?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body d-flex justify-content-around">
+        <button class="btnPdf ms-2 " (click)="pdfGeneral()">Imprimir PDF General<i
+            class=' bx bxs-file-pdf'></i></button>
+        <button class="btnPdf ms-2 " (click)="pdfHombreOtro()">Imprimir PDF Hombre u Otro<i
+            class=' bx bxs-file-pdf'></i></button>
+        <button class="btnPdf ms-2 " (click)="pdfMujeres()">Imprimir PDF Mujeres<i
+            class=' bx bxs-file-pdf'></i></button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="eliminar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">¿Esta seguro que desea eliminar este paciente?</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h4>El paciente {{pacienteElminar.nombre + " " + pacienteElminar.apellido}} sera eliminado</h4>
+        <button type="button" class="btn btn-danger d-flex align-self-center"
+          (click)="eliminarPaciente(pacienteElminar)">Eliminar</button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,84 @@
+<div class="bg-secondary-subtle p-3 mt-5">
+
+    
+
+<div class="bg-secondary-subtle p-3 mt-5" *ngIf="esAdministrador()!=true">
+    <div class="m-5 p-3 text-center fw-bold h1 bg-info bg-opacity-10 border border-info border-start-0 rounded-end">
+        MIS TURNOS
+    </div>
+
+    <table class="table table-bordered table-hover border-primary mt-5" *ngIf="tengoTurnos==true">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">IDTURNO</th>
+                <th scope="col">Paciente</th>
+                <th scope="col">Especialista</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Hora</th>
+                <th scope="col">Centro de Salud</th>
+                <th scope="col">Estado del turno</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let t of misTurnos">
+                <td data-label="Id"  scope="row">{{t._id}}</td>
+                <td data-label="PACIENTE" >{{t.paciente?.apellido}},{{t.paciente?.nombre}}</td>
+                <td data-label="especialista">{{t.especialista.apellido}},{{t.especialista.nombre}} - {{t.especialista.profesion}}</td>
+                <td data-label="fecha">{{t.fecha}}</td>
+                <td data-label="hora">{{t.hora}}</td>
+                <td data-label="centroSalud">{{t.centroSalud}}</td>
+                <td data-label="estado">{{t.estado}}</td>
+                
+            </tr>
+        </tbody>
+    </table>
+
+    <div *ngIf="tengoTurnos==false" class="mt-5">
+        <h2 class="bg-danger p-2 text-white text-center ">Usted no tiene turnos asignados</h2>
+    </div>
+
+</div>
+    <button type="button" class="btn btn-success" (click)="darDeAltaTurnos()" *ngIf="esAdministrador()==true">Dar de Alta Turnos</button>
+    
+
+    <div class="m-5 p-3 text-center fw-bold h1 bg-info bg-opacity-10 border border-info border-start-0 rounded-end">
+        TURNOS DISPONIBLES
+    </div>
+
+    <table class="table table-bordered table-hover border-primary mt-5" *ngIf="hayTurnos==true">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">IdTurno</th>
+                <th scope="col">Especialista</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Hora</th>
+                <th scope="col">Centro de Salud</th>
+                <th scope="col">Estado del turno</th>
+                <th scope="col">Operaciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let t of turnos">
+                <td data-label="Id" scope="row">{{t._id}}</td>
+                <td data-label="especialista">{{t.especialista.apellido}},{{t.especialista.nombre}} - {{t.especialista.profesion}}</td>
+                <td data-label="fecha">{{t.fecha | date: 'dd/MM/yyyy'}}</td>
+                <td data-label="Hora">{{t.hora}}</td>
+                <td data-label="Hora">{{t.centroSalud}}</td>
+                <td data-label="Estado">{{t.estado}}</td>
+                <td data-label="Operaciones">
+                    <button type="button" class="btn btn-primary" *ngIf="esAdministrador()==false" (click)="reservarTurno(t)">Reservar turno</button>
+                    <button type="button" class="btn btn-warning" *ngIf="esAdministrador()==true" (click)="modificarTurno(t)">Modificar turno</button>
+                    <button *ngIf="esAdministrador()==true" type="button" class="btn btn-danger" (click)="eliminarTurno(t)">Eliminar turno</button> 
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div *ngIf="hayTurnos==false" class="mt-5">
+        <h2 class="bg-danger p-2 text-white text-center ">NO HAY TURNOS DISPONIBLES POR EL MOMENTO</h2>
+    </div>
+
+</div>
+
+

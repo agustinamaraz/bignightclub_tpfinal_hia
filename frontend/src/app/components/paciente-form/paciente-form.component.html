@@ -1,0 +1,89 @@
+<br>
+<div class="mt-5">
+    <div style="padding-left:2%; padding-right: 2%; padding-top: 2%; padding-bottom: 2%;">
+     
+      <form #pacienteForm="ngForm" class="formstyle" style="padding: 5%;">
+        <h1>Formulario para cargar un paciente</h1>
+  
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input name="nombre" type="text" class="form-control" id="nombre"[(ngModel)]="paciente.nombre"
+            placeholder="Ingrese nombre" required #nombre="ngModel" >
+                   <div *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)"
+                        class="row alert alert-danger">
+                          <div *ngIf=" nombre.errors?.['required']">
+                                  Nombre Requerido.
+                          </div>
+                          <div *ngIf=" nombre.errors?.['minlength = 4 ']">
+                            Nombre, no menos de 4 caracteres.
+                          </div>
+                    </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="idapellido" class="form-label">Apellido</label>
+            <input name="apellido" type="text" class="form-control" id="idapellido" 
+            placeholder="Ingrese apellido" required #apellido="ngModel" [(ngModel)]="paciente.apellido">
+                    <div *ngIf="apellido.invalid && (apellido.dirty || apellido.touched)"
+                        class="row alert alert-danger">
+                          <div *ngIf=" apellido.errors?.['required']">
+                            Apellido Requerido.
+                          </div>
+                          <div *ngIf=" apellido.errors?.['minlength']">
+                            Nombre, no menos de 4 caracteres.
+                          </div>
+                    </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="idfecha" class="form-label">Fecha de Nacimiento:</label>
+            <input type="date" class="form-control" id="idfecha" name="fechaNac" required
+                placeholder="Ingrese fecha de nacimiento" [(ngModel)]="paciente.fechaNac" required #fechaNac="ngModel">
+
+                <div *ngIf="fechaNac.invalid && (fechaNac.dirty || fechaNac.touched)"
+                class="row alert alert-danger">
+                  <div *ngIf=" fechaNac.errors?.['required']">
+                    Fecha de Nacimiento Requerida.
+                  </div>
+            </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="dni" class="form-label">DNI</label>
+          <input type="number" class="form-control" id="dni" name="dni" required
+              placeholder="Ingrese numero de dni" [(ngModel)]="paciente.dni" required #dni="ngModel">
+
+              <div *ngIf="dni.invalid && (dni.dirty || dni.touched)"
+              class="row alert alert-danger">
+                <div *ngIf=" dni.errors?.['required']">
+                  Numero de DNI requerido
+                </div>
+                <div *ngIf=" dni.errors?.['minlength']">
+                  DNI no puede tener menos de 7 numeros
+                </div>
+          </div>
+      </div>
+      <div class="mb-3 ms-2" [ngClass]="{'is-invalid': sexoInput.invalid && (sexoInput.dirty || sexoInput.touched)}">
+        <label for="sexo">Genero</label>
+        <select name="genero" id="genero" aria-label="select genero" [(ngModel)]="paciente.genero" class="form-select select-scrollable" required #sexoInput="ngModel">
+            <option value="" disabled selected>Seleccione un genero</option>
+            <option value="Mujer">Mujer</option>
+            <option value="Hombre">Hombre</option>
+            <option value="Otro">Otro</option>
+        </select>
+        <div *ngIf="sexoInput.invalid && (sexoInput.dirty || sexoInput.touched)" class="alert alert-danger my-1 p-1">
+            <div *ngIf="sexoInput.errors?.['required']">
+                El genero es requerido
+            </div>
+        </div>
+      </div>
+          
+        <button *ngIf="accion=='new'" type="submit" class="btn btn-success" (click)="guardarPaciente()" [disabled]="pacienteForm.invalid">Registrar Paciente</button>
+          <button *ngIf="accion=='update'" type="submit" class="btn btn-warning" (click)="modificarPaciente()">Modificar Paciente</button>  
+          <button type="submit" class="btn btn-danger ms-2" (click)="cancelar()">Cancelar</button>         
+    </form>
+      
+  </div>
+  </div>
+  
+  

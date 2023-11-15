@@ -1,0 +1,15 @@
+.formstyle {
+    background-color: rgba(55, 117, 209, 0.6);
+    color: #fff;
+    width: 90%;
+    height: 50%;
+}
+
+
+.formstyle h1{
+    text-align: center;
+    font-size: 25px;
+}
+button{
+    text-align: center;
+}

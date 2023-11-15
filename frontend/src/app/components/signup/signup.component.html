@@ -1,0 +1,124 @@
+<div class="container" id="container">
+    <div class="form-container sign-in-container">
+<form  #signUpForm="ngForm" (ngSubmit)="onSubmit()">
+    <div class="mb-3 text-center">
+        <h1 class="text-center p-2" *ngIf="esAdministrador()">Registrar un usuario</h1>
+        <h1 class="text-center p-2" *ngIf="!esAdministrador()">Registrarse</h1>
+        <label for="username" class="form-label">Nombre de usuario</label>
+        <input type="text" class="form-control form" [(ngModel)]="usuario.username" id="username" min="0.01" name="username" required #usernameInput="ngModel" placeholder="Ingrese su nombre de usuario">
+        <div *ngIf="usernameInput.invalid && !loadUsername && (usernameInput.dirty || usernameInput.touched)" class="alert alert-danger my-1 p-1">
+            <div *ngIf="usernameInput.errors?.['required']">
+                El nombre de usuario es requerida
+            </div>
+            <div *ngIf="usernameInput.errors?.['min']">
+                El nombre de usuario debe ser mayor a 0
+            </div>
+        </div>
+        <div *ngIf="repeatedUsername" class="alert alert-danger my-1 p-1">
+            Ya existe una cuenta con ese nombre de usuario
+        </div>
+    </div>
+    <div class="mb-3 text-center">
+        <label for="dni" class="form-label">Dni</label>
+        <input type="text" class="form-control form" [(ngModel)]="usuario.dni" id="dni" min="0.01" name="udni" required #dniInput="ngModel" placeholder="Ingrese su dni">
+        <div *ngIf="dniInput.invalid && (dniInput.dirty || dniInput.touched)" class="alert alert-danger my-1 p-1">
+            <div *ngIf="dniInput.errors?.['required']">
+                El dni es requerido
+            </div>
+            <div *ngIf="dniInput.errors?.['min']">
+                El dni debe ser mayor a 0
+            </div>
+        </div>
+    </div>
+    <div class="mb-3 text-center">
+        <label for="password" class="form-label">Contraseña</label>
+        <input type="password" class="form-control form" [(ngModel)]="usuario.password" id="password" min="0.01" name="password" required #passwordInput="ngModel" placeholder="Ingrese una contraseña">
+        <div *ngIf="passwordInput.invalid && !loadPassword && (passwordInput.dirty || passwordInput.touched)" class="alert alert-danger my-1 p-1">
+            <div *ngIf="passwordInput.errors?.['required']">
+                La contraseña es requerida
+            </div>
+            <div *ngIf="passwordInput.errors?.['min']">
+                La contraseña debe ser mayor a 0
+            </div>
+        </div>
+    </div>
+    <div class="mb-3 text-center">
+        <label for="email" class="form-label">Correo electronico</label>
+        <input type="email" class="form-control form" [(ngModel)]="usuario.email" id="email" min="0.01" name="email" required #emailInput="ngModel" placeholder="Ingrese su correo electronico">
+        <div *ngIf="emailInput.invalid && !loadEmail && (emailInput.dirty || emailInput.touched)" class="alert alert-danger my-1 p-1">
+            <div *ngIf="emailInput.errors?.['required']">
+                El email es requerido
+            </div>
+        </div>
+        <div *ngIf="repeatedEmail" class="alert alert-danger my-1 p-1">
+            Ya existe una cuenta con ese email
+        </div>
+    </div>
+    <div class="mb-3"  *ngIf="!esAdministrador()">
+        <label for="nombre" class="form-label">Nombre</label>
+        <input type="text" class="form-control form" [(ngModel)]="nombre" id="nombre" min="0.01" name="nombre" required #nombreInput="ngModel" placeholder="Ingrese su nombre">
+        <div *ngIf="nombreInput.invalid && (nombreInput.dirty || nombreInput.touched)" class="alert alert-danger my-1 p-1">
+            <div *ngIf="nombreInput.errors?.['required']">
+                El nombre es requerido
+            </div>
+        </div>
+    </div>
+    <div class="mb-3 ms-2"  *ngIf="!esAdministrador()">
+        <label for="apellido" class="form-label">Apellido</label>
+        <input type="text" class="form-control form" [(ngModel)]="apellido" id="apellido" min="0.01" name="apellido" required #apellidoInput="ngModel" placeholder="Ingrese su apellido">
+        <div *ngIf="apellidoInput.invalid && (apellidoInput.dirty || apellidoInput.touched)" class="alert alert-danger my-1 p-1">
+            <div *ngIf="apellidoInput.errors?.['required']">
+                El apellido es requerido
+            </div>
+        </div>
+    </div>
+    <div class="mb-3 ms-2" *ngIf="!esAdministrador()">
+        <label for="fecha" class="form-label">Fecha de Nacimiento</label>
+        <input type="date" class="form-control form" [(ngModel)]="fecha" id="fecha" min="0.01" name="fecha" required #fechaInput="ngModel" placeholder="Ingrese su fecha de nacimiento">
+        <div *ngIf="fechaInput.invalid && (fechaInput.dirty || fechaInput.touched)" class="alert alert-danger my-1 p-1">
+            <div *ngIf="fechaInput.errors?.['required']">
+                La fecha de nacimiento es requerida
+            </div>
+        </div>
+    </div>
+    <div *ngIf="!modifica && esAdministrador()" class="mb-3 ms-2" [ngClass]="{'is-invalid': rolInput.invalid && (rolInput.dirty || rolInput.touched)}">
+        <label for="rol" class="form-label">Rol</label>
+        <select name="rol" id="rol" aria-label="select rol" [(ngModel)]="usuario.rol._id" class="form-select select-scrollable" style="max-height: 200px;" required #rolInput="ngModel">
+            <option value="" disabled selected>Seleccione un rol</option>
+            <option *ngFor="let item of roles" [value]="item._id">{{item.descripcion}}</option>
+        </select>
+        <div *ngIf="rolInput.invalid && (rolInput.dirty || rolInput.touched)" class="alert alert-danger my-1 p-1">
+            <div *ngIf="rolInput.errors?.['required']">
+                El rol es requerido
+            </div>
+        </div>
+    </div>
+    <div class="mb-3 ms-2" *ngIf="!esAdministrador()" [ngClass]="{'is-invalid': sexoInput.invalid && (sexoInput.dirty || sexoInput.touched)}">
+        <label for="sexo">Genero</label>
+        <select name="genero" id="genero" aria-label="select genero" [(ngModel)]="sexo" class="form-select select-scrollable" required #sexoInput="ngModel">
+            <option value="" disabled selected>Seleccione un genero</option>
+            <option value="Mujer">Mujer</option>
+            <option value="Hombre">Hombre</option>
+            <option value="Otro">Otro</option>
+        </select>
+        <div *ngIf="sexoInput.invalid && (sexoInput.dirty || sexoInput.touched)" class="alert alert-danger my-1 p-1">
+            <div *ngIf="sexoInput.errors?.['required']">
+                El genero es requerido
+            </div>
+        </div>
+    </div>
+    <button type="submit" *ngIf="!modifica" [disabled]="signUpForm.invalid" (click)="createUser()" class="text-center">Registrarse</button>
+    <button type="submit" *ngIf="modifica" [disabled]="signUpForm.invalid" class="text-center">Modificar</button>
+    <button (click)="loginGo()" class="btnLogin text-center">Iniciar sesion</button>
+</form>
+<div class="overlay-container">
+    <div class="overlay">
+        <div class="overlay-panel overlay-right">
+            <h1>Hola!</h1>
+            <p>Si ya tenes una cuenta, ingresa tu informacion e inicia sesion</p>
+            <button class="ghost" id="signUp"  (click)="loginGo()">Iniciar Sesion</button>
+        </div>
+    </div>
+</div>
+</div>
+</div>

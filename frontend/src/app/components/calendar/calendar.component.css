@@ -1,0 +1,38 @@
+section{
+  margin-top: 150px;
+}
+.st-bg { background:black; }
+.st-bg-today { background:yellow; border-left:1px solid yellow; border-right:1px solid yellow; }
+.st-dtitle { background:white; }
+
+.buttons{
+  margin-left: 4%;
+  display: flex;
+  justify-content: space-between;
+  width: 30%;
+}
+button{
+  margin-top: 2%;
+  padding: 0.8%;
+  border: #3da9b8 0.1em solid;
+  border-radius: 12px;
+  background-color: #3da9b8;
+  font-weight: 600;
+  color: #fefeff;
+  text-decoration: none;
+  cursor: pointer;
+}
+.container{
+  width: 100vw;
+  height: 150vh;
+}
+.containerForm{
+  width: 90%;
+}
+input {
+	background-color: #eee;
+	border: none;
+	padding: 12px 15px;
+	margin: 8px 0;
+	width: 100%;
+}

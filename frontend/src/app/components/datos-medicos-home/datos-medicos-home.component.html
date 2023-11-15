@@ -1,0 +1,117 @@
+
+<a [routerLink]="'/datosMedicos'" *ngIf="!noData && !noPatient" id="btnVolver" class="btn btn-danger p-2 mt-4 ms-4">Volver</a>
+<div class="container ms-1 layout" *ngIf="!noData && !noPatient">
+    <div class="section-left">
+    <h1 class="title-leftSection mt-2 mb-2" *ngIf="!choseOther">Ultimo control medico</h1>
+    <h1 class="title-leftSection mt-2 mb-2" *ngIf="choseOther">Control medico del {{" "+this.datoMedicoVer.fecha}}</h1>
+    <div class="title">
+        <h4>{{datoMedicoVer.motivo}}</h4>
+    </div>
+    <hr class="mt-2 mb-2">
+    <div class="box">
+        <div class="box-title">{{pacienteBuscado.nombre + '  ' + pacienteBuscado.apellido}}</div>
+        <div class="box-body">
+            <p class="card-title">Dni: {{' '+pacienteBuscado.dni}}</p>
+            <p class="card-title">Genero: {{' '+pacienteBuscado.genero}}</p>
+            <p class="card-text">Altura: {{' '+datoMedicoVer.talla}}</p>
+            <p class="card-text">Peso: {{' '+datoMedicoVer.peso}}</p>
+            <p class="card-text">Tension arterial: {{' '+datoMedicoVer.tension_arterial }}</p>
+            <p class="card-text">IMC: {{' '+datoMedicoVer.imc}}</p>
+            <p class="card-text">Temperatura: {{' '+datoMedicoVer.temperatura}}</p>
+            <p class="card-text">Centro de Salud: {{' '+datoMedicoVer.centroSalud}}</p>
+            <p class="card-text" *ngIf="gender">Fecha de ultima Menstruacion: {{' '+datoMedicoVer.fechaMenstruacion}}</p>
+
+            <hr class="mt-2 mb-2">
+            <div class="descripcion">
+                <p class="text-diagnostico">
+                    {{datoMedicoVer.diagnostico}}
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion" *ngIf="moreThan1">
+        <h4 class="mb-2">Ultimos tres controles</h4>
+        <ng-container *ngFor="let item of datosMedicosAux">
+        <div class="accordion-item">
+        <input type="checkbox" id="item-1" />
+        <label for="item-1" class="accordion-header">
+            <span id="motivoAccordion">{{item.motivo}}</span>
+            <span class="arrow">
+            <i class='bx bx-caret-right'></i>
+            </span>
+        </label>
+        <div class="accordion-content mb-4">
+            <p>
+            {{item.diagnostico}}
+            </p>
+        </div>
+        </div>
+    </ng-container>
+    </div>
+</div>
+    <div class="section-right mt-4">
+        <br>
+        <h1 *ngIf="moreThan1" class="title-rightSection mt-4 mb-2">Historial de controles</h1>
+        <input class="form-control" type="text" placeholder="Buscar control medico" [(ngModel)]="searchText" *ngIf="moreThan1">
+        <table class="table table-bordered table-hover border-primary mt-5" *ngIf="moreThan1" >
+            <thead class="table-primary">
+                <tr>
+                    <th scope="col">Motivo</th>
+                    <th scope="col">Dni</th>
+                    <th scope="col">Nombre Completo</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Diagnostico</th>
+                    <th scope="col">Centro de Salud</th>
+                    <th scope="col">Operaciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let d of datosMedicos | search: searchText">
+                    <td data-label="Motivo">{{d.motivo}}</td>
+                    <td data-label="Dni">{{d.pacienteObj.dni}}</td>
+                    <td data-label="Nombre Completo">{{d.pacienteObj.nombre + ' ' + d.pacienteObj.apellido}}</td>
+                    <td data-label="Fecha Control">{{d.fecha}}</td>
+                    <td data-label="Diagnostico">{{d.diagnostico}}</td>
+                    <td data-label="Centro de Salud">{{d.centroSalud}}</td>
+                    <td data-label="Operaciones" class="d-flex justify-content-around">
+                        <button type="button" class="btnDetalle" (click)="seeData(d)">Ver control</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <h4 class="ms-4 mt-4 caution" *ngIf="!moreThan1">No existen otros registros de este paciente</h4>
+        <button class="btnExcel" *ngIf="!gender && moreThan1" (click)="excelTable()">Descargar Excel <i class='bx bx-table bx-flip-horizontal'></i></button>
+        <button class="btnPdf" *ngIf="!gender && moreThan1" (click)="imprimirPdf()">Imprimir PDF<i class=' bx bxs-file-pdf'></i></button>
+        <button class="btnExcel" *ngIf="gender && moreThan1" (click)="excelTableMujer()">Descargar Excel <i class='bx bx-table bx-flip-horizontal'></i></button>
+        <button class="btnPdf" *ngIf="gender && moreThan1" (click)="imprimirPdfMujer()">Imprimir PDF<i class=' bx bxs-file-pdf'></i></button>
+    </div>
+    </div>
+    <div class="sign" *ngIf="noData">
+        <div class="box2">
+            <section class="main-cv ">
+                <div class="info">
+                    <span class="name">Lo Lamento</span>
+                    <span class="prof mt-2">No existen registros medicos del paciente seleccionado</span>
+                    <div class="divider"></div>
+                    <div class="bio">
+                        <a class="btnVolver" [routerLink]="'/paciente'">Volver</a>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <div class="sign ms-4 my-4" *ngIf="noPatient">
+        <div class="box2">
+            <section class="main-cv ">
+                <div class="info">
+                    <span class="name">Lo Lamento</span>
+                    <span class="prof mt-2">Usted no realizo ningun control en el puesto</span>
+                    <div class="divider"></div>
+                    <div class="bio">
+                        <a class="btnVolver"  [routerLink]="'/home'">Volver</a>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>

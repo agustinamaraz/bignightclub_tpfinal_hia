@@ -1,0 +1,77 @@
+
+  
+<br><br><br><br><br>
+<div class="container">
+   <h1 class="text-center">Centro de Salud "Los Huaicos"</h1>
+   <br>
+  <h4>Si tienes alguna pregunta o necesitas asistencia adicional, nuestro equipo de atención al cliente está disponible para ayudarte. No dudes en contactarnos a través de los canales proporcionados en nuestra página de contactos.
+
+    </h4>
+</div>
+ <br><br>
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 col-sm-12 col-12" *ngFor=" let  a  of contactos">
+      <div  *ngIf="a.tipo == 'telefono'">
+        <div class="card mb-3 phone-card" style="max-width: 540px;">
+          <div class="row g-0">
+            <div class="col-md-4 ld">
+              <img src="https://e7.pngegg.com/pngimages/956/387/png-clipart-phone-phone.png" alt="Phone Icon">
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h3 class="card-title">Teléfono</h3>
+                <p class="description">--{{a.descripcion}} </p>
+                <div class="contact">
+                  <img src="https://e7.pngegg.com/pngimages/956/387/png-clipart-phone-phone.png" alt="Phone Icon">
+                  <p>{{a.valor}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div  *ngIf="a.tipo == 'gmail'">
+        <div class="card mb-3 gmail-card" style="max-width: 540px;">
+          <div class="row g-0">
+            <div class="col-md-4 ld">
+              <img src="https://static.vecteezy.com/system/resources/previews/016/716/465/non_2x/gmail-icon-free-png.png" alt="Phone Icon">
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h3 class="card-title">Gmail</h3>
+                <p class="description">{{a.descripcion}} </p>
+                <div class="contact">
+                  <img src="https://static.vecteezy.com/system/resources/previews/016/716/465/non_2x/gmail-icon-free-png.png" alt="Phone Icon">
+                  <p>{{a.valor}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+       </div>
+       <div  *ngIf="a.tipo == 'celular'">
+         <div class="card mb-3 celular-card" style="max-width: 540px;">
+           <div class="row g-0">
+             <div class="col-md-4 ld">
+               <img src="https://images.vexels.com/media/users/3/204690/isolated/preview/ccb652d1ca11908eeb950eb670c02619-telefono-celular-sonando-icono-azul.png" alt="Phone Icon">
+             </div>
+             <div class="col-md-8">
+               <div class="card-body">
+                 <h3 class="card-title">Celular</h3>
+                 <p class="description">{{a.descripcion}} </p>
+                 <div class="contact">
+                   <img src="https://images.vexels.com/media/users/3/204690/isolated/preview/ccb652d1ca11908eeb950eb670c02619-telefono-celular-sonando-icono-azul.png" alt="Phone Icon">
+                   <p>{{a.valor}}</p>
+                 </div>
+               </div>
+             </div>
+           </div>
+         </div>
+        </div>
+    </div>
+   
+ </div>
+ 
+</div>
+  

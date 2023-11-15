@@ -1,0 +1,87 @@
+.image img{
+  width: 100%;
+}
+.image{
+  margin-top: 0px;
+  width: 100%;
+}
+.telefonos{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  width: 100%;
+  padding: 20px;
+}
+.telefonos .iconos{
+  background-color: #F4F2F3;
+  color: #3da9b8;
+  width: 60px;
+  height: 60px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 25px;
+}
+.telefonos ul{
+  justify-content: space-around;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  row-gap: 20px;
+  width: 100%;
+}
+p{
+  margin-bottom: 0;
+}
+.telefonos li{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 10px;
+}
+
+ul{
+  padding-left: 0;
+}
+.mapas{
+  margin:50px auto;
+  width: 80%;
+  padding: 50px;
+  border-radius: 50px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  background-color: #3da9b8;
+}
+.mapas iframe{
+  border-radius: 20px;
+  height: 500px;
+  width: 500px;
+}
+@media screen and (max-width: 1400px){
+  .mapas iframe:nth-child(2){
+    margin-top: 50px;
+  }
+  .mapas{
+    width:60%;
+  }
+}
+@media screen and (max-width: 600px) {
+  .image img{
+    width: 100%;
+    height: 200px;
+    border-radius: 0 0 20px 20px;
+  }
+  .mapas{
+    width: 90%;
+  }
+
+}
+
+

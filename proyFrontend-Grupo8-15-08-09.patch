@@ -1,0 +1,273 @@
+diff --git forkSrcPrefix/angular.json forkDstPrefix/angular.json
+index d2a56916b273f7f91cdc28deedaa436995b47352..37c962dfc805fb62b82f9d7e995d9254cd4e547b 100644
+--- forkSrcPrefix/angular.json
++++ forkDstPrefix/angular.json
+@@ -49,6 +49,12 @@
+                   "maximumError": "4mb"
+                 }
+               ],
++              "fileReplacements": [
++                {
++                  "replace": "src/environments/environment.ts",
++                  "with": "src/environments/environment.prod.ts"
++                }
++              ],
+               "outputHashing": "all"
+             },
+             "development": {
+diff --git forkSrcPrefix/src/environments/environment.ts forkDstPrefix/src/environments/environment.ts
+index b1f11cab458583fb6d5ab310b03083d19594ef58..10afb3786c5b676e4b486dca9c9cab589fec33c6 100644
+--- forkSrcPrefix/src/environments/environment.ts
++++ forkDstPrefix/src/environments/environment.ts
+@@ -4,6 +4,7 @@
+ 
+ export const environment = {
+   production: false,
++  url_base: 'http://localhost:3000/',
+   firebaseConfig : {
+     apiKey: "AIzaSyDCdKYQC6o5vBzuAvJkFgSaUYnn6H-fN-4",
+     authDomain: "centrodesaludhuico-d74ce.firebaseapp.com",
+diff --git forkSrcPrefix/src/environments/environment.prod.ts forkDstPrefix/src/environments/environment.prod.ts
+index 3612073bc31cd4c1f5d6cbb00318521e9a61bd8a..61602a65ce22cfe5e6eadb66e28bca389aec2e55 100644
+--- forkSrcPrefix/src/environments/environment.prod.ts
++++ forkDstPrefix/src/environments/environment.prod.ts
+@@ -1,3 +1,4 @@
+ export const environment = {
+-  production: true
++  production: true,
++  url_base: 'http://localhost:3000/'
+ };
+diff --git forkSrcPrefix/src/app/services/usuario.service.ts forkDstPrefix/src/app/services/usuario.service.ts
+index ae5354d7310b0daf68767abf6ed3349c94704535..fadb993a47eb51da4db94bd1d4d135c18a71a467 100644
+--- forkSrcPrefix/src/app/services/usuario.service.ts
++++ forkDstPrefix/src/app/services/usuario.service.ts
+@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+ import { Injectable } from '@angular/core';
+ import { Observable } from 'rxjs';
+ import { Usuario } from '../models/usuario';
++import { environment } from 'src/environments/environment';
+ 
+ @Injectable({
+   providedIn: 'root'
+@@ -10,7 +11,7 @@ export class UsuarioService {
+   hostBase: string;
+ 
+   constructor(private http:HttpClient) {
+-    this.hostBase = "http://3.82.255.160:3000/api/usuario/";
++    this.hostBase = `${environment.url_base}api/usuario/`;
+    }
+ 
+   //todos los pacientes
+diff --git forkSrcPrefix/src/app/services/turno.service.ts forkDstPrefix/src/app/services/turno.service.ts
+index 504ae36b6b0322553951f1fe46c68012502d875f..ed0a180d5aeadfd36edde36e2a5ad786c83f171d 100644
+--- forkSrcPrefix/src/app/services/turno.service.ts
++++ forkDstPrefix/src/app/services/turno.service.ts
+@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+ import { Injectable } from '@angular/core';
+ import { Observable } from 'rxjs';
+ import { Turno } from '../models/turno';
++import { environment } from 'src/environments/environment';
+ 
+ @Injectable({
+   providedIn: 'root'
+@@ -9,8 +10,8 @@ import { Turno } from '../models/turno';
+ export class TurnoService {
+   hostBase: string;
+   constructor(private http: HttpClient) {
+-    //3.82.255.160:
+-    this.hostBase = "http://3.82.255.160:3000/api/turno/";
++    //localhost:
++    this.hostBase = `${environment.url_base}api/turno/`;
+   }
+ 
+   getTurno(id: string): Observable<any> {
+diff --git forkSrcPrefix/src/app/services/token-interceptor.service.ts forkDstPrefix/src/app/services/token-interceptor.service.ts
+index 8286ebc0c9d4f1cdad1059a7d2b636dfed3be991..fc71d65b674c3d79dcca769add81bf66168f7682 100644
+--- forkSrcPrefix/src/app/services/token-interceptor.service.ts
++++ forkDstPrefix/src/app/services/token-interceptor.service.ts
+@@ -16,7 +16,7 @@ export class TokenInterceptorService implements HttpInterceptor {
+     req: HttpRequest<any>,
+     next: HttpHandler
+   ): Observable<HttpEvent<any>> {
+-    if (req.url.indexOf('3.82.255.160', 0) >= 0) {
++    if (req.url.indexOf('localhost', 0) >= 0) {
+     //if (req.url.indexOf('localhost', 0) >= 0) {
+       const tokenizeReq = req.clone({
+         setHeaders: {
+diff --git forkSrcPrefix/src/app/services/login.service.ts forkDstPrefix/src/app/services/login.service.ts
+index 7095f14700b976e1962abb12aa5dd3ccf33fb358..e0a5c6885a607fc99f8dcbf5807418003dbfc717 100644
+--- forkSrcPrefix/src/app/services/login.service.ts
++++ forkDstPrefix/src/app/services/login.service.ts
+@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
+ import { parse } from 'path';
+ import { Observable } from 'rxjs';
+ import { GooService } from './goo.service';
++import { environment } from 'src/environments/environment';
+ 
+ @Injectable({
+   providedIn: 'root'
+@@ -11,14 +12,14 @@ export class LoginService {
+   hostBase: string;
+ 
+   constructor(private http: HttpClient, private gooService:GooService) {
+-    this.hostBase = "http://3.82.255.160:3000/api/usuario/"
++    this.hostBase = `${environment.url_base}api/usuario/`
+   }
+   public getRoles():Observable<any>{
+     const httpOption = {
+       headers: new HttpHeaders({
+       })
+     }
+-    return this.http.get('http://3.82.255.160:3000/api/rol/', httpOption)
++    return this.http.get(`${environment.url_base}api/rol/`, httpOption)
+   }
+   public signUp(username:string, password:string, email:string, rol:string, dni:string):Observable<any>{
+     const httpOption = {
+@@ -36,7 +37,7 @@ export class LoginService {
+       })
+     }
+ 
+-    return this.http.get('http://3.82.255.160:3000/api/usuario/confirm/'+token, httpOption)
++    return this.http.get(`${environment.url_base}api/usuario/confirm/`+token, httpOption)
+ 
+   }
+   loginEmailGoogle(email:string):Observable<any>{
+@@ -51,7 +52,7 @@ export class LoginService {
+   public login(username: string, password: string): Observable<any> {
+     const httpOption = {
+       headers: new HttpHeaders({
+-        'access-control-allow-origin': 'http://3.82.255.160',
++        'access-control-allow-origin': `${environment.url_base}`,
+         'Content-Type': 'application/json'
+       })
+     }
+diff --git forkSrcPrefix/src/app/services/paciente.service.ts forkDstPrefix/src/app/services/paciente.service.ts
+index 83fbcc751b270a2b2ab7cece02dac3b8ce384ea4..8964ca641e104079a002e11649175d0b18766351 100644
+--- forkSrcPrefix/src/app/services/paciente.service.ts
++++ forkDstPrefix/src/app/services/paciente.service.ts
+@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+ import { Injectable } from '@angular/core';
+ import { Observable } from 'rxjs/internal/Observable';
+ import { Paciente } from '../models/paciente';
++import { environment } from 'src/environments/environment';
+ 
+ @Injectable({
+   providedIn: 'root'
+@@ -10,8 +11,8 @@ export class PacienteService {
+   hostBase: string;
+ 
+   constructor(private http:HttpClient) {
+-    //this.hostBase = "http://3.82.255.160:3000/api/paciente/";
+-    this.hostBase = "http://3.82.255.160:3000/api/paciente/";
++    //this.hostBase = "http://localhost:3000/api/paciente/";
++    this.hostBase = `${environment.url_base}api/paciente/`;
+    }
+ 
+   getPaciente(id:string):Observable<any>{
+diff --git forkSrcPrefix/src/app/services/goo.service.ts forkDstPrefix/src/app/services/goo.service.ts
+index 3ae5a87dcf194511f39ee2f104f812639d6efaec..8cffc3500474d8ce8b4e1872e9ce867884a9e7c7 100644
+--- forkSrcPrefix/src/app/services/goo.service.ts
++++ forkDstPrefix/src/app/services/goo.service.ts
+@@ -7,6 +7,7 @@ import { authCodeFlowConfig } from './../sso.config';
+ //import { LoginService } from './login.service';
+ import { ActivatedRoute, Router } from '@angular/router';
+ import { NavComponent } from '../components/nav/nav.component';
++import { environment } from 'src/environments/environment';
+ @Injectable({
+   providedIn: 'root',
+ })
+@@ -196,6 +197,6 @@ export class GooService {
+       })
+     }
+     let body = JSON.stringify({email:email});
+-    return this._http.post('http://3.82.255.160:3000/api/usuario/' +'gmail', body, httpOption);
++    return this._http.post(`${environment.url_base}api/usuario/` +'gmail', body, httpOption);
+   }
+ }
+diff --git forkSrcPrefix/src/app/services/especialista.service.ts forkDstPrefix/src/app/services/especialista.service.ts
+index 86ad685211ee19f543b931913657be7be38cb01f..bf7b11a9c4d37dab50ec06d22921e8669a3120cb 100644
+--- forkSrcPrefix/src/app/services/especialista.service.ts
++++ forkDstPrefix/src/app/services/especialista.service.ts
+@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+ import { Injectable } from '@angular/core';
+ import { Observable } from 'rxjs';
+ import { Especialista } from '../models/especialista';
++import { environment } from 'src/environments/environment';
+ 
+ @Injectable({
+   providedIn: 'root'
+@@ -10,11 +11,11 @@ export class EspecialistaService {
+   hostBase: string;
+ 
+   constructor(private http: HttpClient) {
+-    this.hostBase = "http://3.82.255.160:3000/api/especialista/";
++    this.hostBase = `${environment.url_base}api/especialista/`;
+   }
+ /*
+   constructor(private http: HttpClient) {
+-    this.hostBase = "http://3.82.255.160:3000/api/especialista/";
++    this.hostBase = "http://localhost:3000/api/especialista/";
+   }*/
+ 
+   getEspecialistas(): Observable<any> {
+diff --git forkSrcPrefix/src/app/services/datos-medicos-service.service.ts forkDstPrefix/src/app/services/datos-medicos-service.service.ts
+index 04a9f2e8a395f2d8041698103aac2ad6c598fb93..5c5cf152a0fedf0add6da6360f25dc89fdbc5532 100644
+--- forkSrcPrefix/src/app/services/datos-medicos-service.service.ts
++++ forkDstPrefix/src/app/services/datos-medicos-service.service.ts
+@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+ import { Injectable } from '@angular/core';
+ import { Observable } from 'rxjs';
+ import { DatosMedicos } from '../models/datos-medicos';
++import { environment } from 'src/environments/environment';
+ 
+ @Injectable({
+   providedIn: 'root'
+@@ -9,7 +10,7 @@ import { DatosMedicos } from '../models/datos-medicos';
+ export class DatosMedicosServiceService {
+   urlBase:string
+   constructor(private _http: HttpClient) {
+-    this.urlBase = "http://3.82.255.160:3000/api/datosMedicos/";
++    this.urlBase = `${environment.url_base}api/datosMedicos/`;
+   }
+   addDatosMedicos(motivo:string, pacienteId:string, fecha:string, peso:number,
+     imc:number, talla:number, tension_arterial:string, diagnostico:string, temperatura:number, fechaMenstruacion:string,
+diff --git forkSrcPrefix/src/app/services/contacto.service.ts forkDstPrefix/src/app/services/contacto.service.ts
+index db87f433b6f4d3e7ed4c640e49b0b70bb024b732..2a2db62c83b74fd277020bea576ef0d346d71705 100644
+--- forkSrcPrefix/src/app/services/contacto.service.ts
++++ forkDstPrefix/src/app/services/contacto.service.ts
+@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+ import { Injectable } from '@angular/core';
+ import { Observable } from 'rxjs';
+ import { Contacto } from '../models/contacto';
++import { environment } from 'src/environments/environment';
+ 
+ @Injectable({
+   providedIn: 'root'
+@@ -10,7 +11,7 @@ import { Contacto } from '../models/contacto';
+ export class ContactoService {
+   urlBase:string
+   constructor(private http:HttpClient) {
+-    this.urlBase = "http://3.82.255.160:3000/api/contacto/";
++    this.urlBase = `${environment.url_base}api/contacto/`;
+   }
+   getContactos():Observable<any>{
+     let httpOptions={
+diff --git forkSrcPrefix/src/app/services/anuncio.service.ts forkDstPrefix/src/app/services/anuncio.service.ts
+index bc7bdb87a2f0659e4417b1c0f868885738803a3c..965dfffb7e5f0be6851b04076648ea1a57d8c562 100644
+--- forkSrcPrefix/src/app/services/anuncio.service.ts
++++ forkDstPrefix/src/app/services/anuncio.service.ts
+@@ -3,11 +3,13 @@ import { Injectable } from '@angular/core';
+ import { Anuncio } from '../models/anuncio';
+ import { Observable } from 'rxjs';
+ import { Recurso } from '../models/recurso';
++import {environment} from "../../environments/environment";
++
+ @Injectable({
+   providedIn: 'root'
+ })
+ export class AnuncioService {
+-  urlBase: string = "http://3.82.255.160:3000/api/anuncio/"
++  urlBase: string = `${environment.url_base}api/anuncio/`
+   constructor(private _http: HttpClient) { }
+   addAnuncio(anuncio: Anuncio): Observable<any> {
+ 

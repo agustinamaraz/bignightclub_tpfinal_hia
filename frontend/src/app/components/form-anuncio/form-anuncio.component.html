@@ -1,0 +1,201 @@
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div *ngIf="controlador =='caja1'">
+    <div class="row p-1">
+        <div class="col-12">
+            <h1 class="text-center">Registrar Anuncio </h1>
+        </div>
+    </div>
+    <div class="row g-1 justify-content-center mt-3">
+        <div class="col-8">
+            <form class="mb-3" #anuncioForm="ngForm">
+                <div class="mb-3">
+                    <label class="form-label">Ingrese titulo</label>
+                    <input type="text" class="form-control" name="titulo" [(ngModel)]="anuncio.titulo" #titulo="ngModel" required>
+                    <div *ngIf="titulo.invalid && (titulo.dirty || titulo.touched)" class="alert alert-danger">
+                        <!-- Si es invalido, touched si la caja a sido tocada, dirty cuando la caja no esta limpia  -->
+                        <div *ngIf="titulo.errors?.['required']"> <!-- Si es que tiene errores si contiene required-->
+                            El titulo es requerido
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Ingrese descripcion </label>
+                    <input type="text" class="form-control" name="descripcion" [(ngModel)]="anuncio.descripcion" required #descripcion="ngModel">
+                    <div *ngIf="descripcion.invalid && (descripcion.dirty || descripcion.touched)" class="alert alert-danger">
+                        <!-- Si es invalido, touched si la caja a sido tocada, dirty cuando la caja no esta limpia  -->
+                        <div *ngIf="descripcion.errors?.['required']"> <!-- Si es que tiene errores si contiene required-->
+                            La Descripcion es requerida.
+                        </div>
+                    </div>
+                
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Fecha de Desde</label>
+                    <label class="form-control">{{anuncio.fechaDesde}}</label>
+                </div>
+                <div class="mb-3">
+                    <label for="fecha1" class="form-label">Fecha de Hasta</label>
+                    <input type="date" class="form-control" id="fecha1" name="fecha1" [(ngModel)]="anuncio.fechaHasta" required   (ngModelChange)="verificar()"
+                      #fecha1="ngModel" />
+                    <div *ngIf="fecha1.invalid && (fecha1.dirty || fecha1.touched)" class="alert alert-danger">
+                      <!-- Si es invalido, touched si la caja a sido tocada, dirty cuando la caja no esta limpia  -->
+                      <div *ngIf="fecha1.errors?.['required']"> <!-- Si es que tiene errores si contiene required-->
+                       Esta fecha es requerida.
+                      </div>
+                    </div>
+                  </div>
+              
+                <div class="text-center d-flex justify-content-around">
+                    <button type="button" class="btn btn-primary  btn-lg"  (click)="guardar()" *ngIf="nextbutton=='guardar'" [disabled]="anuncioForm.invalid"> Siguiente</button>
+                    <button type="button" class="btn btn-primary  btn-lg"  (click)="modificarAnuncio1()" *ngIf="nextbutton=='modificar'"> Siguiente</button>
+                    <button type="button" class="btn btn-primary  btn-lg"  (click)="cancelarVolver()" *ngIf="can=='yes'"> Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--<div  *ngIf="controlador =='caja2'">  -->
+<div class="container" *ngIf="controlador =='caja2'">
+    <h1 class="text-center ">Registrar Anuncio </h1>
+    <div class="text-center d-flex justify-content-around" >
+     <button type="button" class="btn btn-primary  btn-lg"  (click)="tipourl()" > url </button>
+    <button type="button" class="btn btn-primary  btn-lg"  (click)="tipoarchivo()"> archivo</button>
+    </div>
+  
+    <div *ngIf="tipo=='url'">
+        <div class="mb-3">
+            <label class="form-label">Ingrese titulo</label>
+            <input type="text" class="form-control" name="titulo" [(ngModel)]="recurso.titulo" #titulo="ngModel" required>
+            <div *ngIf="titulo.invalid && (titulo.dirty || titulo.touched)" class="alert alert-danger">
+              
+                <div *ngIf="titulo.errors?.['required']"> 
+                    El titulo es requerido
+                </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Ingrese descripcion </label>
+            <input type="text" class="form-control" name="descripcion" [(ngModel)]="recurso.descripcion" required #descripcion="ngModel">
+            <div *ngIf="descripcion.invalid && (descripcion.dirty || descripcion.touched)" class="alert alert-danger">
+                
+                <div *ngIf="descripcion.errors?.['required']"> 
+                    La Descripcion es requerida.
+                </div>
+            </div>
+        
+        </div>
+       
+        <div class="mb-3">
+            <label for="basic-url" class="form-label">Ingrese URL</label>
+          
+              <span class="input-group-text" >https://Ejemplo.com</span>
+              <input type="text" class="form-control"  name="url"  [(ngModel)]="recurso.url" required #url="ngModel" >
+              <div *ngIf="url.invalid && (url.dirty || url.touched)" class="alert alert-danger">
+                
+                <div *ngIf="url.errors?.['required']"> 
+                    La Url es requerida.
+                </div>
+            </div>
+        
+           
+        </div>
+
+        <button type="button" class="btn btn-primary btn-lg"  (click)="addRecursoP()" > guardar </button>
+    </div>
+   <div *ngIf="tipo=='archivo'">
+    <div class="mb-3">
+        <label class="form-label">Ingrese titulo</label>
+        <input type="text" class="form-control" name="titulo" [(ngModel)]="recurso.titulo" #titulo="ngModel" required>
+        <div *ngIf="titulo.invalid && (titulo.dirty || titulo.touched)" class="alert alert-danger">
+          
+            <div *ngIf="titulo.errors?.['required']"> 
+                El titulo es requerido
+            </div>
+        </div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Ingrese descripcion </label>
+        <input type="text" class="form-control" name="descripcion" [(ngModel)]="recurso.descripcion" required #descripcion="ngModel">
+        <div *ngIf="descripcion.invalid && (descripcion.dirty || descripcion.touched)" class="alert alert-danger">
+            
+            <div *ngIf="descripcion.errors?.['required']"> 
+                La Descripcion es requerida.
+            </div>
+        </div>
+    
+    </div>
+    <div class="mb-3">
+        <label for="tipo" class="form-label">Tipo de Archivo</label>
+        <select id="tipo" class="form-select" aria-label=".form-select-lg example" name="tipo" [(ngModel)]="recurso.tipo" (ngModelChange)="tipooArchivo()" required #tipo>
+          <option value="imagen">Imagen</option>
+          <option value="video">Video</option>
+          <option value="audio">Audio</option>
+          <option value="documento">Documento</option>
+        </select>
+    </div>
+    <div *ngIf="archivoElec == 'imagen'">
+        <input type="file" accept=".png,  .jpg , .jpeg" (change)="convertirBase64($event)">
+    </div>
+    <div *ngIf="archivoElec == 'video'">
+        <input type="file" accept=".mp4,  .mov , .mkv" (change)="convertirBase64($event)">
+    </div>
+    <div *ngIf="archivoElec == 'audio'">
+        <input type="file" accept=".mp3,  .wav , .flac" (change)="convertirBase64($event)">
+    </div>
+    <div *ngIf="archivoElec == 'documento'">
+        <input type="file" accept=".pdf" (change)="convertirBase64($event)">
+    </div>
+    <br>
+    <button type="button" class="btn btn-primary btn-lg"  (click)="addRecursoP()" > guardar </button>
+   </div>
+   <!--    <div *ngIf="list=='activa'">-->
+   <div >
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Titulo</th>
+            <th scope="col">Tipo</th>
+            <th scope="col">Descripcion</th>
+            <th scope="col">URL</th>
+            <th scope="col">Opciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let recurso of listRecurso">
+            <td data-label="titulo">{{recurso.titulo}}</td>
+            <td data-label="tipo">{{recurso.tipo}}</td>
+            <td data-label="descripcion">{{recurso.descripcion}}</td>
+            <td data-label="url">{{recurso.url}}</td>
+            <td>
+                <button type="button" class="btn btn-danger btn-sm" (click)="eliminarRecurso(recurso)">
+                    Borrar
+                </button>
+            </td>
+          </tr>
+          
+        </tbody>
+      </table>
+      
+   </div>
+      <br>
+      <br>
+      <div class="text-center d-flex justify-content-around">
+  <button type="button" class="btn btn-primary d-flex justify-content-around btn-lg"  (click)="volver()" > Volver </button>
+    <button type="button" class="btn btn-primary d-flex justify-content-around btn-lg"  (click)="finalizar()"> Finalizar</button>
+      </div>
+ 
+</div>
+
+
+<!--
+<input type="file" accept=".png,  .jpg , .jpeg" (change)="convertirBase64($event)">
+<img src="{{archivos[0]}}" alt="imagen subida">
+<br>
+<button type="button" class="btn btn-primary btn-lg"  (click)="elimarArchivo()"> Eliminar</button>
+-->

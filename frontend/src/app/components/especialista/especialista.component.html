@@ -1,0 +1,78 @@
+<div class="container">
+    <div style="padding-left: 5%;">
+        <button type="button" class="btnAgregar mt-4 ms-2" (click)="agregarEspecialista()">Agregar Especialista</button>
+        <button type="button" class="btnPdf ms-2" (click)="imprimirPdf()">Imprimir PDF  <i class=' bx bxs-file-pdf'></i></button>
+        <button type="button" class="btnExcel ms-2" (click)="imprimirXlsx() ">Descargar Excel <i class='bx bx-table bx-flip-horizontal' ></i></button>
+    </div>
+    <br>
+    <br>
+
+    <h5 class="ms-4">Buscar Especialista por su dni</h5>
+    <div class="mb-3 ms-4" style="width:80%;">
+        <input type="text" class="form-control" id="idfecha" name="fechaNac" required placeholder="Ingrese dni a buscar"
+            [(ngModel)]="dni" (ngModelChange)="obtenerEspecialistaPorDNI()">
+    </div>
+
+    <h5 class="ms-4">Buscar Especialista por su Nombre</h5>
+    <div class="mb-3 ms-4" style="width:80%;">
+        <input type="text" class="form-control" id="idfecha" name="fechaNac" required placeholder="Ingrese nombre a buscar"
+            [(ngModel)]="nombre" (ngModelChange)="obtenerEspecialistaN()">
+    </div>
+    <h5 class="ms-4">Buscar Especialista por su Apellido</h5>
+    <div class="mb-3 ms-4" style="width:80%;">
+        <input type="text" class="form-control" id="idfecha" name="fechaNac" required placeholder="Ingrese apellido a buscar"
+            [(ngModel)]="apellido" (ngModelChange)="obtenerEspecialistaA()">
+    </div>
+    <!--<h5 class="ms-4">Buscar Especialista por nombre o apellido</h5>
+    <div class="mb-3 ms-4" style="width:80%;">
+      <input type="text" class="form-control" id="idfecha" name="fechaNac" required
+          placeholder="Ingrese nombre o apellido de paciente a buscar" [(ngModel)]="dato" (ngModelChange)="obtenerPacienteNA()">
+  </div>-->
+ 
+    <div style="padding: 3%;" >
+        <table class="table table-bordered table-hover border-primary mt-5">
+            <thead class="table-primary">
+                <tr>
+                    <th scope="col">Dni</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Apellido</th>
+                    <th scope="col">Profesion</th>
+                    <th scope="col">Centro de Salud</th>
+                    <th scope="col">Operaciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let e of especialistas">
+                    <td data-label="Dni">{{e.dni}}</td>
+                    <td data-label="Nombre">{{e.nombre}}</td>
+                    <td data-label="apellido">{{e.apellido}}</td>
+                    <td data-label="Profesion">{{e.profesion}}</td>
+                    <td data-label="Profesion">{{e.centroSalud}}</td>
+                    <td data-label="Operaciones "  class="d-flex justify-content-around">
+                        <button type="button" class="btn btn-warning" (click)="modificarEspecialista(e)">Modificar</button>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#eliminar" (click)="modalEliminar(e)">Eliminar</button>
+                        <!-- podria ser turnos asignados -->
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+<div class="modal fade" id="eliminar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">¿Esta seguro que desea eliminar a este especialista?</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <h4>El especialista {{especialistaEliminar.nombre + " " + especialistaEliminar.apellido}} sera eliminado</h4>
+            <button type="button" class="btn btn-danger d-flex align-self-center" (click)="eliminarEspecialista(especialistaEliminar)">Eliminar</button>
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+    </div>
+    </div>
+</div>

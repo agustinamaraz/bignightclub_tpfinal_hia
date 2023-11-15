@@ -1,0 +1,81 @@
+<br>
+<div class="mt-5">
+    <div style="padding-left:30%; padding-top: 2%;padding-bottom: 2%;">
+     
+      <form #pacienteForm="ngForm" class="formstyle" style="padding: 5%;">
+        <h1>Formulario para cargar un Contacto</h1>
+  
+        <div class="mb-3">
+            <label for="descripcion" class="form-label">Descripcion</label>
+            <input name="descripcion" type="text" class="form-control" id="descripcion"[(ngModel)]="contacto.descripcion"
+            placeholder="Ingrese descripcion" required #descripcion="ngModel" >
+                   <div *ngIf="descripcion.invalid && (descripcion.dirty || descripcion.touched)"
+                        class="row alert alert-danger">
+                          <div *ngIf=" descripcion.errors?.['required']">
+                            descripcion Requerido.
+                          </div>
+                          <div *ngIf=" descripcion.errors?.['minlength']">
+                            descripcion, no menos de 4 caracteres.
+                          </div>
+                    </div>
+        </div>
+        <div class="mb-3">
+            <label for="tipo" class="form-label">Tipo de Contacto</label>
+            <select id="tipo" class="form-select" aria-label=".form-select-lg example" name="tipo" [(ngModel)]="contacto.tipo" (ngModelChange)="tipoContacto()" required #tipo>
+              <option value="telefono">Telefeno</option>
+              <option value="celular">Celular</option>
+              <option value="gmail">Gmail</option>
+            </select>
+        </div>
+        <div *ngIf="contacto.tipo === 'telefono'">
+            <div class="mb-3 ms-2">
+                <label for="telefono" class="form-label">Ingrese Numero de Telefono</label>
+                <input type="number" class="form-control form" [(ngModel)]="contacto.valor" id="telefono" min="0.01" name="telefono" required #telefono="ngModel"  placeholder="Ingrese numero de telefono">
+                <div *ngIf="telefono.invalid && (telefono.dirty || telefono.touched)" class="alert alert-danger my-1 p-1">
+                    <div *ngIf="telefono.errors?.['required']">
+                        El telefono  es requerida
+                    </div>
+                    <div *ngIf="telefono.errors?.['min']">
+                        El telefono  debe ser mayor a 0
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="contacto.tipo === 'celular'"  >
+            
+                <div class="mb-3 ms-2">
+                    <label for="Celular" class="form-label">Ingrese Numero de Celular</label>
+                    <input type="number" class="form-control form" [(ngModel)]="contacto.valor" id="telefono" min="0.01" name="Celular" required #Celular="ngModel"  placeholder="Ingrese numero de Celular">
+                    <div *ngIf="Celular.invalid && (Celular.dirty || Celular.touched)" class="alert alert-danger my-1 p-1">
+                        <div *ngIf="Celular.errors?.['required']">
+                            El Celular  es requerida
+                        </div>
+                        <div *ngIf="Celular.errors?.['min']">
+                            El Celular  debe ser mayor a 0
+                        </div>
+                    </div>
+                </div>
+            
+        </div>   
+        <div *ngIf="contacto.tipo === 'gmail'"  >
+            <div class="mb-3 ms-2">
+                <label for="email" class="form-label">Correo electronico</label>
+                <input type="email" class="form-control form" [(ngModel)]="contacto.valor" id="email" min="0.01" name="email" required #emailInput="ngModel" placeholder="Ingrese su correo electronico">
+                <div *ngIf="emailInput.invalid && (emailInput.dirty || emailInput.touched)" class="alert alert-danger my-1 p-1">
+                    <div *ngIf="emailInput.errors?.['required']">
+                        El email es requerido
+                    </div>
+                </div>
+                
+            </div>
+        </div>   
+    
+          
+        <button *ngIf="accion=='new'" type="submit" class="btn btn-success" (click)="guardarContato()">Registrar Contacto</button>
+          <button *ngIf="accion=='update'" type="submit" class="btn btn-warning" (click)="modificarContacto()">Modificar Contacto</button>  
+          <button type="submit" class="btn btn-danger ms-2" (click)="cancelar()">Cancelar</button>         
+    </form>
+      
+  </div>s
+  </div>
+  

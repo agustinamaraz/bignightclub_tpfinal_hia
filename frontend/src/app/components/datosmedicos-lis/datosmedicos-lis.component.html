@@ -1,0 +1,97 @@
+<br><br><br>
+<div class="container">
+<input class="form-control ms-2 mt-4" type="text" placeholder="Buscar" [(ngModel)]="searchText">
+<div class="buttons">
+    <a [routerLink]="'/datosMedicos-form/0'" class="btnAgregar mt-2 ms-2">Agregar Control</a>
+    <button class="btnExcel ms-2" data-bs-toggle="modal" data-bs-target="#modalExcel" >Descargar Excel <i class='bx bx-table bx-flip-horizontal' ></i></button>
+    <button class="btnPdf ms-2 " data-bs-toggle="modal" data-bs-target="#modalPdf">Imprimir PDF<i class=' bx bxs-file-pdf'></i></button>
+</div>
+<div style="padding: 3%;">
+    <table class="table table-bordered table-hover border-primary mt-5" >
+        <thead class="table-primary">
+            <tr>
+                <th scope="col">Motivo</th>
+                <th scope="col">Dni del Paciente</th>
+                <th scope="col">Nombre Completo del Paciente</th>
+                <th scope="col">Genero</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Diagnostico</th>
+                <th scope="col">Operaciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let d of datosMedicos | search: searchText">
+                <td data-label="Motivo">{{d.motivo}}</td>
+                <td data-label="Dni">{{d.pacienteObj.dni}}</td>
+                <td data-label="Paciente">{{d.pacienteObj.nombre + ' ' + d.pacienteObj.apellido}}</td>
+                <td data-label="Genero">{{d.pacienteObj.genero}}</td>
+                <td data-label="Fecha">{{d.fecha}}</td>
+                <td data-label="diagnostico">{{d.diagnostico}}</td>
+                <td data-label="Operaciones" class="d-flex justify-content-around">
+                    <button type="button" class="btn btn-warning" (click)="modificarDatoMedico(d)">Modificar</button>
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#eliminar" (click)="modalEliminar(d)">Eliminar</button>
+                    <button type="button" class="btn btn-primary" (click)="verControl(d.pacienteObj.dni)">Controles Medicos</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</div>
+<div class="modal fade" tabindex="-1" id="modalExcel" data-bs-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">¿Que archivo excel quiere descargar?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body d-flex justify-content-around">
+                <button class="btnExcel ms-2" (click)="excelTableGeneral()">Todos los controles<i class='bx bx-table bx-flip-horizontal' ></i></button>
+                <button class="btnExcel ms-2" (click)="excelTableHombreOtro()">Controles de Hombre u Otro<i class='bx bx-table bx-flip-horizontal' ></i></button>
+                <button class="btnExcel ms-2" (click)="excelTableMujeres()">Controles de Mujeres<i class='bx bx-table bx-flip-horizontal' ></i></button>
+                <button class="btnExcel ms-2" (click)="excelTableHuaico()">Controles de centro de salud Huaico<i class='bx bx-table bx-flip-horizontal' ></i></button>
+                <button class="btnExcel ms-2" (click)="excelTableCuyaya()">Controles de centro de salud Cuyaya<i class='bx bx-table bx-flip-horizontal' ></i></button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" tabindex="-1" id="modalPdf" data-bs-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">¿Que archivo pdf quiere descargar?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body d-flex justify-content-around">
+                <button class="btnPdf ms-2 " (click)="pdfGeneral()">Imprimir PDF General<i class=' bx bxs-file-pdf'></i></button>
+                <button class="btnPdf ms-2 " (click)="pdfHombreOtro()">Imprimir PDF Hombre u Otro<i class=' bx bxs-file-pdf'></i></button>
+                <button class="btnPdf ms-2 " (click)="pdfMujeres()">Imprimir PDF Mujeres<i class=' bx bxs-file-pdf'></i></button>
+                <button class="btnPdf ms-2 " (click)="pdfHuaico()">Imprimir PDF Huaico<i class=' bx bxs-file-pdf'></i></button>
+                <button class="btnPdf ms-2 " (click)="pdfCuyaya()">Imprimir PDF Cuyaya<i class=' bx bxs-file-pdf'></i></button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="eliminar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">¿Esta seguro que desea eliminar este control medico?</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <h4>El control medico de {{datoMedicoEliminar.pacienteObj.nombre + " " + datoMedicoEliminar.pacienteObj.apellido + " del " + datoMedicoEliminar.fecha}} sera eliminado</h4>
+            <button type="button" class="btn btn-danger d-flex align-self-center" (click)="eliminarDatoMedico(datoMedicoEliminar)">Eliminar</button>
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+    </div>
+    </div>
+</div>

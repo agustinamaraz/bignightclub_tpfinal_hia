@@ -1,0 +1,50 @@
+<div class="container">
+    <br>
+      <div style="padding-left: 5%;">
+        <button type="button" class="btn btn-success" (click)="agregarContacto()">Agregar Contacto</button>  
+      </div>
+<br>
+<br>
+    
+    <div style="padding: 3%;">
+        <table class="table table-bordered table-hover border-primary mt-5" >
+            <thead class="table-primary">
+                <tr>
+                    <th scope="col">Tipo</th>
+                    <th scope="col">Descripcion</th>
+                    <th scope="col">Valor</th>
+                    <th scope="col">Operaciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let p of contactos">
+                    <td>{{p.tipo}}</td>
+                    <td>{{p.descripcion}}</td>
+                    <td>{{p.valor}}</td>
+                    <td class="d-flex justify-content-around">
+                        <button type="button" class="btn btn-warning" (click)="modificarContacto(p._id)">Modificar Contacto</button>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#eliminar" (click)="modalEliminar(p._id)">Eliminar Contacto</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="eliminar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">¿Esta seguro que desea eliminar este contacto?</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <h4>El contacto sera eliminado</h4>
+            <button type="button" class="btn btn-danger d-flex align-self-center" (click)="eliminarContacto(contactoEliminar)">Eliminar</button>
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+    </div>
+    </div>
+  </div>

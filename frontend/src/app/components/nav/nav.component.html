@@ -1,0 +1,70 @@
+<header>
+  <a href="#" class="logo">Centro de Salud <br> "Los Huaicos"</a>
+  <div class="menuToggle" (click)="toggleMenu()"></div>
+  <nav>
+    <ul>
+      <li><a routerLink="/inicio">Inicio</a></li>
+
+      <li *ngIf="esAdministrador()==true"><a routerLink="/calendar">Crear un evento</a></li>
+
+      <li *ngIf="esAdministrador()==true"><a href="#">Gestionar <b>▼</b></a>
+        <ul>
+          <li><a href="#">Gestionar Usuarios<b>▼</b></a>
+            <ul>
+              <li><a routerLink="/usuarios">Visualizar Usuarios Registrados</a></li>
+              <li><a routerLink="/signUp/0">Crear un usuario</a></li>
+            </ul>
+          </li>
+          <li><a href="#">Gestionar Especialistas <b>▼</b></a>
+            <ul>
+              <li><a class="dropdown-item" [routerLink]="'especialista-form/0'">Crear Especialista</a></li>
+              <li><a class="dropdown-item" [routerLink]="'especialista'">Listado de Especialistas</a></li>
+            </ul>
+          </li>
+          <li><a href="#">Gestionar Turnos <b>▼</b></a>
+            <ul>
+              <li><a class="dropdown-item" [routerLink]="'turno-form/0'">Crear Turnos</a></li>
+              <li><a class="dropdown-item" [routerLink]="'turno'">Listado de Turnos Asignados</a></li>
+              <li><a [routerLink]="'/turnos-disponibles'">Ver Turnos disponibles</a></li>
+            </ul>
+          </li>
+          <li><a href="#">Gestionar Paciente<b>▼</b></a>
+            <ul>
+              <li><a class="dropdown-item" [routerLink]="'paciente-form/0'">Crear Paciente</a></li>
+              <li><a class="dropdown-item" [routerLink]="'paciente'">Listado de Pacientes</a></li>
+              <li><a class="dropdown-item" [routerLink]="'datosMedicos-form/0'">Crear datos Médicos</a></li>
+              <li><a class="dropdown-item" [routerLink]="'datosMedicos'">Listado de Datos Médicos</a></li>
+              <li><a class="dropdown-item" [routerLink]="'/datosMedicosHome/'">Mis Controles Médicos</a></li>
+            </ul>
+          </li>
+          <li><a href="#">Gestionar Anuncios<b>▼</b></a>
+            <ul>
+
+              <li ><a routerLink="/list-anuncio">Tabla y Creación de Anuncios</a></li>
+              <li ><a routerLink="/list-anuncio-cliente">Visualizar Anuncios</a></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li *ngIf="esAdministrador()!=true"><a routerLink="/list-anuncio-cliente">Ver Anuncios</a></li>
+      <li *ngIf="esAdministrador()==false"><a routerLink="/calendarVisitante">Calendario de Actividades</a>
+      </li>
+      <li *ngIf="esPaciente()==true"><a [routerLink]="'/turnos-disponibles'">Ver Turnos disponibles</a></li>
+      <li *ngIf="esPaciente()"><a [routerLink]="'/datosMedicosHome/'+loginService.userLoggedDNI()">Mis Controles</a>
+      </li>
+      <li class="logins">
+        <a routerLink="/login" style="color: black;" class="login"
+          *ngIf="!loginService.userLoggedIn() && !esLoggedGoogle() && !esAmbas() ">Iniciar Sesion</a>
+        <a (click)="logOutComponent()" class="logout" *ngIf="loginService.userLoggedIn() && !esAmbas()">
+          <p>Cerrar Sesion</p>
+        </a>
+        <a (click)="logoutGoogle()" class="logout" *ngIf="esLoggedGoogle()  && !esAmbas()">
+          <p>Cerrar Sesion</p>
+        </a>
+        <a (click)="bothLogOut()" class="logout" *ngIf="esAmbas()">
+          <p>Cerrar Sesion</p>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</header>
