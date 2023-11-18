@@ -1,7 +1,6 @@
 version: '3.1'
 
 services:
-
   mongo:
     image: mongo
     restart: always
@@ -16,9 +15,21 @@ services:
   node-app:
     build:
       context: ./backend/
-      dockerfile: dockerfile.dockerfile
+      dockerfile: dockerfile
     restart: always
+    environment:
+      - DB_URI=mongodb://mongo:27017/centrodb
     ports:
       - 3001:3000
     depends_on:
       - mongo
+
+  web-app:
+    build:
+      context: ./frontend/
+      dockerfile: dockerfile
+    restart: always
+    ports:
+      - 8080:80
+    depends_on:
+      - node-app

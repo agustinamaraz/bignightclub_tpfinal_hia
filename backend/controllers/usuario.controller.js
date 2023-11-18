@@ -1,23 +1,23 @@
-import { sign } from 'jsonwebtoken';
-import { hash, compare } from 'bcrypt';
-import { getToken, getTokenData, getTokenPassword } from '../config/jwt.config';
-import Usuario, { find, isThisUsernameInUse, isThisEmailInUse, findOne, updateOne, deleteMany, findById, deleteOne } from './../models/usuario';
-import { v4 as uuidv4 } from 'uuid';
-import { getTemplate, sendEmail, sendEmailPassword, getTemplatePassword, getTokenConfirm } from '../config/email.config';
-import rolCtrl from './rol.controller';
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+const { getToken, getTokenData, getTokenPassword } = require('../config/jwt.config');
+const Usuario = require('./../models/usuario');
+const { v4: uuidv4 } = require('uuid');
+const { getTemplate, sendEmail, sendEmailPassword, getTemplatePassword, getTokenConfirm } = require('../config/email.config');
+const rolCtrl = require('./rol.controller');
 const usuarioCtrl = {}
 
 usuarioCtrl.getTodosUsuarios = async (req, res) => {
     console.log("Entrando a get todosssssss")
-       var usuarios = await find().populate("rol"); 
+       var usuarios = await Usuario.find().populate("rol"); 
     res.json(usuarios);
  }
 
 usuarioCtrl.createUsuario = async (req, res) => {
     console.log("create usuario");
     const [isNewUsername, isNewUser] = await Promise.all([
-        isThisUsernameInUse(req.body.username),
-        isThisEmailInUse(req.body.email)
+        Usuario.isThisUsernameInUse(req.body.username),
+        Usuario.isThisEmailInUse(req.body.email)
     ]);
     if (!isNewUsername && !isNewUser) {
         return res.status(448).json({
@@ -93,7 +93,7 @@ usuarioCtrl.confirm = async (req, res) => {
         console.log("Entrando a data " , data.data)
 
         // Verificar existencia del usuario
-        const user = await findOne({ email });
+        const user = await Usuario.findOne({ email });
         console.log("Entrando a data " , user)
 
         if (user === null) {
@@ -114,7 +114,7 @@ usuarioCtrl.confirm = async (req, res) => {
         // Actualizar usuario
         user.status = 'VERIFIED';
         console.log("Entrando a data " , user.status)
-        await updateOne({ email }, { $set: { status: 'VERIFIED' } });
+        await Usuario.updateOne({ email }, { $set: { status: 'VERIFIED' } });
 
 
         // Enviar respuesta exitosa al cliente
@@ -135,7 +135,7 @@ usuarioCtrl.confirm = async (req, res) => {
 usuarioCtrl.askReset = async (req, res) => {
     const { email } = req.body;
     try {
-        const user = await findOne({ email });
+        const user = await Usuario.findOne({ email });
         if (!user) {
         return res.status(499).json({
             success: false,
@@ -192,7 +192,7 @@ usuarioCtrl.resetPassword = async (req, res) => {
     
         // Obtener el usuario asociado al token
         const { email } = data.data;
-        const user = await findOne({ email });
+        const user = await Usuario.findOne({ email });
         if (!user) {
             return res.json.status(499)({
             success: false,
@@ -201,19 +201,19 @@ usuarioCtrl.resetPassword = async (req, res) => {
         }
     
         // Hashear la nueva contraseña
-        const hashedPassword = await hash(password, 10);
+        const hashedPassword = await bcrypt.hash(password, 10);
         
         console.log(hashedPassword)
         console.log(user.email + user.username + user.password)
         // Actualizar la contraseña del usuario en la base de datos
         user.password = hashedPassword;
         console.log(user.password)
-        const passwordMatch = await compare(
+        const passwordMatch = await bcrypt.compare(
             password,
             user.password
         );
         console.log(passwordMatch + ' HOLAAAAAAA')
-        await updateOne({ _id: user._id }, { $set: { password: hashedPassword } });
+        await Usuario.updateOne({ _id: user._id }, { $set: { password: hashedPassword } });
     
         return res.json({
             success: true,
@@ -231,7 +231,7 @@ usuarioCtrl.resetPassword = async (req, res) => {
 usuarioCtrl.deleteUserNotVerified = async (req, res) => {
     try {
       // Obtener la lista de usuarios no verificados
-    const usuariosNoVerificados = await find({ status: 'UNVERIFIED' });
+    const usuariosNoVerificados = await Usuario.find({ status: 'UNVERIFIED' });
     if (usuariosNoVerificados.length === 0) {
         return res.json({
             success: true,
@@ -239,7 +239,7 @@ usuarioCtrl.deleteUserNotVerified = async (req, res) => {
         });
     }
         //Eliminar los usuarios no verificados
-    await deleteMany({ status: 'UNVERIFIED' });
+    await Usuario.deleteMany({ status: 'UNVERIFIED' });
     return res.json({
         success: true,
         msg: `Se han eliminado ${usuariosNoVerificados.length} usuarios no verificados.`,
@@ -262,7 +262,7 @@ usuarioCtrl.loginUsuario = async (req, res) => {
 
     console.log(req.body.username + ' aaaaaa')
     try {
-        const user = await findOne(criteria).populate("rol");
+        const user = await Usuario.findOne(criteria).populate("rol");
 
         console.log(user + ' aaaaaaa')
         if (!user) {
@@ -272,14 +272,14 @@ usuarioCtrl.loginUsuario = async (req, res) => {
             })
         } else {
             console.log(user.password + req.body.password)
-            const passwordMatch = await compare(
+            const passwordMatch = await bcrypt.compare(
                 req.body.password,
                 user.password
             );
             console.log(passwordMatch + ' HOLAAAAAAA')
             if (passwordMatch) {
               // Las contraseñas coinciden, generando el token de autenticación
-                const unToken = sign({ id: user._id }, 'secretkey');
+                const unToken = jwt.sign({ id: user._id }, 'secretkey');
 
             res.json({
                 status: 1,
@@ -305,7 +305,7 @@ usuarioCtrl.loginUsuarioEmail= async (req, res) => {
         email: req.body.email
     }
     try {
-        const user = await findOne(criteria).populate("rol");
+        const user = await Usuario.findOne(criteria).populate("rol");
 
         console.log(req.body.email +'  ' +user + ' aaaaaaa')
         if (!user) {
@@ -315,14 +315,14 @@ usuarioCtrl.loginUsuarioEmail= async (req, res) => {
             })
         } else {
             console.log(user.password + req.body.password)
-            const passwordMatch = await compare(
+            const passwordMatch = await bcrypt.compare(
                 req.body.password,
                 user.password
             );
             console.log(passwordMatch + ' HOLAAAAAAA')
             if (passwordMatch) {
               // Las contraseñas coinciden, generando el token de autenticación
-                const unToken = sign({ id: user._id }, 'secretkey');
+                const unToken = jwt.sign({ id: user._id }, 'secretkey');
 
             res.json({
                 status: 1,
@@ -347,7 +347,7 @@ usuarioCtrl.googleLoggedIn = async (req,res) => {
     }
     
     try {
-        const user = await findOne(criteria).populate("rol");
+        const user = await Usuario.findOne(criteria).populate("rol");
 
     console.log(criteria)
     console.log(req.body.email +'  ' +user + ' aaaaaaa')
@@ -374,19 +374,19 @@ usuarioCtrl.googleLoggedIn = async (req,res) => {
     }
 };
 usuarioCtrl.getUsuarios = async (req, res) => {
-    var usuarios = await find().populate("rol");
+    var usuarios = await Usuario.find().populate("rol");
     res.json(usuarios);
 }
 
 usuarioCtrl.getUsuario = async (req, res) => {
-    const usuario = await findById(req.params.id).populate("rol");
+    const usuario = await Usuario.findById(req.params.id).populate("rol");
     res.json(usuario);
 }
 
 usuarioCtrl.editUsuario = async (req, res) => {
     const vusuario = new Usuario(req.body);
     try {
-        await updateOne({ _id: req.body._id }, vusuario);
+        await Usuario.updateOne({ _id: req.body._id }, vusuario);
         res.json({
             'status': '1',
             'msg': 'Usuario updated'
@@ -400,7 +400,7 @@ usuarioCtrl.editUsuario = async (req, res) => {
 }
 usuarioCtrl.deleteUsuario = async (req, res) => {
     try {
-        await deleteOne({ _id: req.params.id });
+        await Usuario.deleteOne({ _id: req.params.id });
         res.json({
             status: '1',
             msg: 'Usuario removed'
@@ -419,9 +419,9 @@ usuarioCtrl.getUsuarioPorDni = async (req, res) =>{
      if (req.query.dniU != null && req.query.dniU!= "") {
        criteria.dni = {$regex: req.query.dniU, $options:""};
      }
-     var users = await find(criteria);
+     var users = await Usuario.find(criteria);
      res.json(users);
 }
 
 //exportacion del modulo controlador
-export default usuarioCtrl;
+module.exports = usuarioCtrl;
