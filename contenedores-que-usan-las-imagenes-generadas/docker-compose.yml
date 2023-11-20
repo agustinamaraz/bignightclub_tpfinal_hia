@@ -1,0 +1,25 @@
+version: "3"
+services:
+  contenedor-backend:
+    container_name: contenedor-backend
+    image: agustinamaraz/backend:latest
+    ports:
+      - "3000:3000" 
+    
+  contenedor-frontend:
+    container_name: contenedor-frontend
+    image: agustinamaraz/frontend:latest
+    ports:
+      - "80:80"
+
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower-container
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - WATCHTOWER_POLL_INTERVAL=10 
+    depends_on:
+      - contenedor-backend   
+      - contenedor-frontend  
+    restart: always
