@@ -4,13 +4,16 @@ services:
     container_name: contenedor-backend
     image: agustinamaraz/backend:latest
     ports:
-      - "3000:3000" 
+      - "3001:3000"
+    environment:
+      #- DB_URI=mongodb://mongo:27017/centrodb
+      - DB_URI=mongodb+srv://agustinamaraz10:ywGzF1nr2ia1ehA5@cluster-tp-final.focxupx.mongodb.net/centrodb
     
   contenedor-frontend:
     container_name: contenedor-frontend
     image: agustinamaraz/frontend:latest
     ports:
-      - "80:80"
+      - "8080:80"
 
   watchtower:
     image: containrrr/watchtower
