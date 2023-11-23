@@ -1,19 +1,29 @@
 # Name the node stage "builder"
 FROM node AS builder
+
 # Set working directory
 WORKDIR /app
-# Copy all files from current directory to working dir in image
+
+# Copy all files from the current directory to the working directory in the image
 COPY . .
-# install node modules and build assets
+
+# Install node modules and build assets
 RUN npm i --force && npm run build
 
-# nginx state for serving content
+# Nginx stage for serving content
 FROM nginx:alpine
-# Set working directory to nginx asset directory
+
+# Set working directory to the nginx asset directory
 WORKDIR /usr/share/nginx/html
+
 # Remove default nginx static assets
 RUN rm -rf ./*
-# Copy static assets from builder stage
+
+# Copy static assets from the builder stage
 COPY --from=builder /app/dist/proyecto-final/ .
-# Containers run nginx with global directives and daemon off
+
+# Create custom Nginx configuration
+RUN echo 'server { listen 80; server_name localhost; location / { root /usr/share/nginx/html; try_files $uri $uri/ /index.html =404; index index.html index.htm; } }' > /etc/nginx/conf.d/default.conf
+
+# Containers run Nginx with global directives and daemon off
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
