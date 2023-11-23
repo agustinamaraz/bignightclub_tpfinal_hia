@@ -37,16 +37,16 @@
               <li><a class="dropdown-item" [routerLink]="'/datosMedicosHome/'">Mis Controles Médicos</a></li>
             </ul>
           </li>
-          <li><a href="#">Gestionar Anuncios<b>▼</b></a>
+          <!-- <li><a href="#">Gestionar Anuncios<b>▼</b></a>
             <ul>
 
               <li ><a routerLink="/list-anuncio">Tabla y Creación de Anuncios</a></li>
               <li ><a routerLink="/list-anuncio-cliente">Visualizar Anuncios</a></li>
             </ul>
-          </li>
+          </li> -->
         </ul>
       </li>
-      <li *ngIf="esAdministrador()!=true"><a routerLink="/list-anuncio-cliente">Ver Anuncios</a></li>
+      <!-- <li *ngIf="esAdministrador()!=true"><a routerLink="/list-anuncio-cliente">Ver Anuncios</a></li> -->
       <li *ngIf="esAdministrador()==false"><a routerLink="/calendarVisitante">Calendario de Actividades</a>
       </li>
       <li *ngIf="esPaciente()==true"><a [routerLink]="'/turnos-disponibles'">Ver Turnos disponibles</a></li>
