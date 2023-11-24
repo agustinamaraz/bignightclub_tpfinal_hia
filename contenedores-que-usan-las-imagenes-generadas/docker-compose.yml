@@ -26,3 +26,5 @@ services:
       - contenedor-backend   
       - contenedor-frontend  
     restart: always
+
+    
