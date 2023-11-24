@@ -24,7 +24,6 @@ services:
       - WATCHTOWER_POLL_INTERVAL=10 
     depends_on:
       - contenedor-backend   
-      - contenedor-frontend  
+      - contenedor-frontend
     restart: always
 
-    
